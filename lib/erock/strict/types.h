@@ -17,36 +17,36 @@
 
 #pragma once
 
+#include "erock/strict/field.h"
+#include <cmath>
 #include <string>
 #include <vector>
 
 namespace erock {
 
     /**
+     * Integer type, 64 bit are used to simplify usage in signed-unsigned context
      */
-    using e_string_t = std::string;
+    using e_int_t = field<int64_t>;
+
+    /**
+     * Floating point type, long double are used so that everyone has enough :)
+     */
+    using e_float_t = field<long double>;
+
+    /**
+     * Boolean type, should be used as is...
+     */
+    using e_bool_t = field<bool>;
 
     /**
      */
-    using e_real_t = double;
-
-    /**
-     */
-    using e_int_t = int;
-
-    /**
-     */
-    using e_bool_t = bool;
+    using e_string_t = field<std::string>;
 
     /**
      */
     template<typename TValue>
-    using e_array_t = std::vector<TValue>;
-
-    /**
-     */
-    struct erock_tag { };
-    
+    using e_array_t = field<std::vector<TValue>>;
 }
 
 /*! @} */

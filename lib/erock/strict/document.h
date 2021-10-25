@@ -14,24 +14,31 @@
 
 #pragma once
 
-#include "erock/strict/object.h"
+#include <string_view>
 
 namespace erock {
 
     /**
-     */
-    template<typename TStruct>
-    class document final {
-    public:
+     * \brief Tries to load JSON file with given name, if succeeded then stores all the loaded values to the related 
+     * fields of the specified structure. 
+     * 
+     * @param name The name of the strict JSON file
+     * @param TValue - Type of the structure which fields matches the objects from JSON file. Each field ot the TValue 
+     * have to be an instance of the erock::field structure with propper name. All these fields are required in the file, 
+     * if the attribbute of the object is not present in the file, the default value will be stored to the desired position.
+     */ 
+    template<typename TValue>
+    TValue load(std::string_view file_name) {
 
-        const TStruct& get() const noexcept { return m_object; }
-        TStruct& get() noexcept { return m_object; }
+    }
 
-    private:
+    /**
+     * \brief Opens or creates file with given name (to owerwrite) then stores all contant to these file.
+     */ 
+    template<typename TValue>
+    void store(const TValue& value, std::string_view file_name) {
 
-        TStruct m_object;
-    };
-
+    }
 }
 
 /*! @} */

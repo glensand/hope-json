@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
 
 file(GLOB R_HEADERS
+    erock/*.h
     erock/strict/*.h
     erock/classic/*.h
 )
