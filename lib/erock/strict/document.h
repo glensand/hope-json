@@ -9,10 +9,13 @@
 /*! \defgroup <strict> Strict
     @{
     \file
-    \brief File contains definitions of the strict json object
+    \brief File contains load/store functions
 */
 
 #pragma once
+
+#include "erock/strict/load.h"
+#include "erock/strict/store.h"
 
 #include <string_view>
 
@@ -28,8 +31,12 @@ namespace erock {
      * if the attribbute of the object is not present in the file, the default value will be stored to the desired position.
      */ 
     template<typename TValue>
-    TValue load(std::string_view file_name) {
-
+    auto load(std::string_view file_name) {
+        TValue object;
+        rapidjson::Document doc;
+        doc.Parse(file_name.data());
+        detail::load(doc, object);
+        return object;
     }
 
     /**

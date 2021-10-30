@@ -25,7 +25,7 @@ namespace erock  {
      *  @param TValue Internal value type (e_int_t, e_bool_t or user structure e.t.c)
      */
     template<typename TValue>
-    struct field final {
+    struct object final {
         /**
          * The name of the object(or attribute in terms of xml)
          */ 
@@ -42,8 +42,27 @@ namespace erock  {
         operator TValue(){
             return value;
         }
+
+        object& operator=(const TValue& v){
+            value = v;
+            return *this;
+        }
     };
-    
+
+    template<typename TValue>
+    constexpr auto is_object(TValue) { return false; }
+
+    template<typename TValue>
+    constexpr auto is_object(object<TValue>) { return true; }
+
+    /**
+     * Checks if the specified type is object in terms of the erock library. 
+     * NOTE: Only erock objects might be processed by load/store operations 
+     * @param TValue the type to be checked
+     */
+    template<typename TValue>
+    constexpr bool is_object_v = is_object(TValue{});
+
 }
 
 /*! @} */
