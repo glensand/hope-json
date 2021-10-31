@@ -10,5 +10,5 @@
 #include "gtest/gtest.h"
 
 TEST(Initial, object){
-    erock::e_int_t test_o{"Name"};
+
 }
