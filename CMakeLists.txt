@@ -12,5 +12,5 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(test)
-#add_subdirectory(samples/document)
+add_subdirectory(samples/document)
 add_subdirectory(lib)

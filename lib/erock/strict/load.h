@@ -18,6 +18,7 @@
 #include "rapidjson/document.h"
 #include "hope/tuple/tuple_from_struct.h"
 #include "erock/strict/types.h"
+#include "erock/strict/type_traits.h"
 
 namespace erock::detail {
 
@@ -46,19 +47,28 @@ namespace erock::detail {
             values.emplace_back(std::move(cur_value));
         }
     }
-    
+
     template<typename TValue>
     void load(rapidjson::Value& doc, object<TValue>& val){
         if constexpr(is_inbuilt_v<TValue>){
             extract(doc, val);
         } else if constexpr(!is_inbuilt_v<TValue>) { // for msvc
             auto&& obj = doc[val.name.data()];
-            auto&& tuple = hope::tuple_from_struct(val.value, 
-                hope::field_policy::reference{});
-            tuple.for_each([&](auto&& field){
-                load(obj, field);
-            });
+            load_object(obj, val);
         }
+    }
+
+    template<typename TValue>
+    void load_object(rapidjson::Value& doc, object<TValue>& val){
+        auto&& tuple = hope::tuple_from_struct(val.value, hope::field_policy::reference{});
+        tuple.for_each([&](auto&& field){
+            load(doc, field);
+        });
+    }
+
+    template<typename TValue>
+    void load(rapidjson::Document& doc, object<TValue>& val){
+        load_object(doc, val);
     }
 
 }

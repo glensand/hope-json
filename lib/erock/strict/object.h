@@ -49,20 +49,6 @@ namespace erock  {
         }
     };
 
-    template<typename TValue>
-    constexpr auto is_object(TValue) { return false; }
-
-    template<typename TValue>
-    constexpr auto is_object(object<TValue>) { return true; }
-
-    /**
-     * Checks if the specified type is object in terms of the erock library. 
-     * NOTE: Only erock objects might be processed by load/store operations 
-     * @param TValue the type to be checked
-     */
-    template<typename TValue>
-    constexpr bool is_object_v = is_object(TValue{});
-
 }
 
 /*! @} */

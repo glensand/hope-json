@@ -15,7 +15,10 @@ file(GLOB R_HEADERS
 
 add_library(erocklib INTERFACE ${R_HEADERS})
 target_include_directories(erocklib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(erocklib INTERFACE ${HOPE_INCLUDE_DIR})
+target_include_directories(erocklib 
+    INTERFACE ${HOPE_INCLUDE_DIR}
+    INTERFACE ${RAPIDJSON_INCLUDE_DIR}
+)
 
 add_dependencies(erocklib hope)
 add_dependencies(erocklib rapidjson)
@@ -24,5 +27,3 @@ add_dependencies(erocklib rapidjson)
 set(CMAKE_INSTALL_DIRECTORY ${CMAKE_BINARY_DIR})
 INSTALL(DIRECTORY erocklib/ DESTINATION ${CMAKE_INSTALL_DIRECTORY}/include/erocklib
         FILES_MATCHING PATTERN "*.h")
-
-
