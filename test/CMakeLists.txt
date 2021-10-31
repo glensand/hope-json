@@ -49,8 +49,12 @@ file(GLOB TEST_SOURSES
     )
 
 add_executable(${BINARY} ${TEST_HEADERS} ${TEST_SOURSES})
-target_include_directories(${BINARY} PUBLIC ${HOPE_INCLUDE_DIR})
-    
+
+target_include_directories(${BINARY} 
+  PUBLIC ${HOPE_INCLUDE_DIR}
+  PUBLIC ${RAPIDJSON_INCLUDE_DIR}
+)
+
 add_dependencies(${BINARY} hope)
 add_dependencies(${BINARY} rapidjson)
 
