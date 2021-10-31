@@ -22,18 +22,22 @@
 
 namespace erock::detail {
 
+    inline 
     void extract(rapidjson::Value& doc, bool_t& val){
         val = doc[val.name.data()].GetBool();
     }
 
+    inline
     void extract(rapidjson::Value& doc, int_t& val){
         val = doc[val.name.data()].GetInt();
     }
 
+    inline
     void extract(rapidjson::Value& doc, real_t& val){
         val = doc[val.name.data()].GetDouble();
     }
 
+    inline
     void extract(rapidjson::Value& doc, string_t& val){
         val = doc[val.name.data()].GetString();
     }
