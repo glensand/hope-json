@@ -64,8 +64,8 @@ namespace{
                 "\"field1\" : 11,"
                 "\"field2\" : true,"
                 "\"field3\" : 11.0"
-            "},"
-            "]"
+            "}"
+            "],"
             "\"field2\" : 11.0"
         "}";
 }
@@ -93,6 +93,7 @@ TEST(Initial, struct_with_struct_array){
     using doc_t = erock::object<struct_with_struct_array>;
     auto&& doc = erock::load<doc_t>(struct_with_struct_array_json);
     auto&& vec = doc.value.f1.value;
+    ASSERT_TRUE(vec.size() == 3);
     for(auto&& v : vec){
         ASSERT_TRUE(v.v1 == 11);
         ASSERT_TRUE(v.v2);
