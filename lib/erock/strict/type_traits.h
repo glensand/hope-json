@@ -18,14 +18,15 @@
 #pragma once
 
 #include "erock/strict/types.h"
+#include "hope/components/user_defined_types.h"
 
 namespace erock {
 
     template<typename TValue>
-    constexpr bool is_vector(std::vector<TValue>){ return true; }
+    constexpr bool is_vector(const std::vector<TValue>&){ return true; }
 
     template<typename TValue>
-    constexpr bool is_vector(TValue){ return false; }
+    constexpr bool is_vector(const TValue&){ return false; }
 
     template<typename TValue, typename TClearValue = std::decay_t<TValue>>
     constexpr bool is_inbuilt_v = 
@@ -33,7 +34,7 @@ namespace erock {
         std::is_same_v<TClearValue, int64_t> ||
         std::is_same_v<TClearValue, std::string> ||
         std::is_same_v<TClearValue, long double> ||
-        is_vector(TClearValue{});
+        hope::is_vector_v<TClearValue>;
 
 }
 

@@ -46,21 +46,21 @@ namespace erock::detail {
     void load(rapidjson::Value& doc, object<TValue>& val); // defined due to call in extract function
 
     template<typename TValue>
-    void extract(rapidjson::Value& doc, array_t<TValue>& values){
-        auto&& json_array = doc[values.name.data()];
-        for(auto&& it : json_array.GetArray()){
-            TValue cur_value;
-            load(it, cur_value);
-            values.emplace_back(std::move(cur_value));
-        }
-    }
-
-    template<typename TValue>
     void load_object(rapidjson::Value& doc, object<TValue>& val);// defined due to call in load function
 
     template<typename TValue>
+    void extract(rapidjson::Value& doc, array_t<TValue>& values){
+        auto&& json_array = doc[values.name.data()];
+        for(auto&& it : json_array.GetArray()) {
+            TValue cur_value;
+            //load(it, cur_value);
+            //values.value.emplace_back(std::move(cur_value));
+        }
+    } 
+
+    template<typename TValue>
     void load(rapidjson::Value& doc, object<TValue>& val){
-        if constexpr(is_inbuilt_v<TValue>){
+        if constexpr(is_inbuilt_v<TValue>) {
             extract(doc, val);
         } else if constexpr(!is_inbuilt_v<TValue>) { // for msvc
             auto&& obj = doc[val.name.data()];
