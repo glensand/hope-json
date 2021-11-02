@@ -11,14 +11,53 @@
 #include "gtest/gtest.h"
 #include <iostream>
 
-struct simple_struct{
-    erock::int_t v1{"field1"};
-    erock::bool_t v2{"field2"};
-    erock::real_t v3{"field3"};
-};
+namespace{
+
+    struct simple_struct final {
+        erock::int_t v1{"field1"};
+        erock::bool_t v2{"field2"};
+        erock::real_t v3{"field3"};
+    };
+
+    struct struct_with_struct final {
+        erock::object<simple_struct> f1{"struct_field"};
+        erock::real_t v3{"field2"};
+    };
+
+    constexpr auto* simple_json = 
+        "{"
+            "\"field1\" : 11,"
+            "\"field2\" : true,"
+            "\"field3\" : 11.0"
+        "}";
+
+    constexpr auto* struct_with_struct_json = 
+        "{"
+            "\"struct_field\" :"
+            "{"
+                "\"field1\" : 11,"
+                "\"field2\" : true,"
+                "\"field3\" : 11.0"
+            "},"
+            "\"field2\" : 11.0"
+        "}";
+}
 
 TEST(Initial, simple_struct){
     using doc_t = erock::object<simple_struct>;
-    doc_t instance;
-    auto&& object = erock::load<doc_t>("test.json");
+    auto&& doc = erock::load<doc_t>(simple_json);
+    auto&& st = doc.value;
+    ASSERT_TRUE(st.v1 == 11);
+    ASSERT_TRUE(st.v2);
+    ASSERT_TRUE(std::abs(st.v3 - 11.0) < FLT_EPSILON);
+}
+
+TEST(Initial, struct_with_struct){
+    using doc_t = erock::object<struct_with_struct>;
+    auto&& doc = erock::load<doc_t>(struct_with_struct_json);
+    auto&& st = doc.value;
+    auto&& inner_structure = st.f1.value;
+    //ASSERT_TRUE(inner_structure.v1 == 11);
+    //ASSERT_TRUE(inner_structure.v2);
+    //ASSERT_TRUE(std::abs(inner_structure.v3 - 11.0) < FLT_EPSILON);
 }

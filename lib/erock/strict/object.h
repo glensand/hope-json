@@ -39,7 +39,7 @@ namespace erock  {
         /**
          * Implicit conversion operator
          */
-        operator TValue(){
+        operator TValue() const {
             return value;
         }
 

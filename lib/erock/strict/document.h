@@ -45,7 +45,7 @@ namespace erock {
      * \brief Opens or creates file with given name (to owerwrite) then stores all contant to these file.
      */ 
     template<typename TValue>
-    void store(const TValue& value, std::string_view file_name) {
+    auto store(const TValue& value) {
 
     }
 }
