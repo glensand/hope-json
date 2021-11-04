@@ -29,6 +29,10 @@ namespace{
         erock::real_t v3{"field2"};
     };
 
+    struct struct_with_simple_array final {
+        //erock::array_t<
+    };
+
     constexpr auto* simple_json = 
         "{"
             "\"field1\" : 11,"
@@ -71,28 +75,26 @@ namespace{
 }
 
 TEST(Initial, simple_struct){
-    using doc_t = erock::object<simple_struct>;
+    using doc_t = simple_struct;
     auto&& doc = erock::load<doc_t>(simple_json);
-    auto&& st = doc.value;
-    ASSERT_TRUE(st.v1 == 11);
-    ASSERT_TRUE(st.v2);
-    ASSERT_TRUE(std::abs(st.v3 - 11.0) < FLT_EPSILON);
+    ASSERT_TRUE(doc.v1 == 11);
+    ASSERT_TRUE(doc.v2);
+    ASSERT_TRUE(std::abs(doc.v3 - 11.0) < FLT_EPSILON);
 }
 
 TEST(Initial, struct_with_struct){
-    using doc_t = erock::object<struct_with_struct>;
+    using doc_t = struct_with_struct;
     auto&& doc = erock::load<doc_t>(struct_with_struct_json);
-    auto&& st = doc.value;
-    auto&& inner_structure = st.f1.value;
+    auto&& inner_structure = doc.f1.value;
     ASSERT_TRUE(inner_structure.v1 == 11);
     ASSERT_TRUE(inner_structure.v2);
     ASSERT_TRUE(std::abs(inner_structure.v3 - 11.0) < FLT_EPSILON);
 }
 
 TEST(Initial, struct_with_struct_array){
-    using doc_t = erock::object<struct_with_struct_array>;
+    using doc_t = struct_with_struct_array;
     auto&& doc = erock::load<doc_t>(struct_with_struct_array_json);
-    auto&& vec = doc.value.f1.value;
+    auto&& vec = doc.f1.value;
     ASSERT_TRUE(vec.size() == 3);
     for(auto&& v : vec){
         ASSERT_TRUE(v.v1 == 11);

@@ -29,7 +29,7 @@ namespace erock  {
         /**
          * The name of the object(or attribute in terms of xml)
          */ 
-        std::string_view name;
+        const std::string_view name;
 
         /**
          * The value of the object
@@ -39,10 +39,14 @@ namespace erock  {
         /**
          * Implicit conversion operator
          */
-        operator TValue() const {
+        operator const TValue&() const {
             return value;
         }
 
+        operator TValue&() {
+            return value;
+        }
+        
         object& operator=(const TValue& v){
             value = v;
             return *this;

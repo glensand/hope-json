@@ -14,15 +14,17 @@
 
 #pragma once
 
+#include <type_traits>
 #include "erock/strict/object.h"
 
 namespace erock  {
 
-    template<typename TValue>
-    constexpr auto is_object(TValue) { return false; }
+    template <typename T>
+    struct is_object final : std::false_type {};
 
-    template<typename TValue>
-    constexpr auto is_object(object<TValue>) { return true; }
+    template <class TValue>
+    struct is_object<object<TValue>> final : std::true_type {};
+
 
     /**
      * Checks if the specified type is object in terms of the erock library. 
@@ -30,7 +32,7 @@ namespace erock  {
      * @param TValue the type to be checked
      */
     template<typename TValue>
-    constexpr bool is_object_v = is_object(TValue{});
+    constexpr bool is_object_v = is_object<TValue>::value;
 
 }
 

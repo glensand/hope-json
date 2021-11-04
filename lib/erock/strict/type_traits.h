@@ -22,12 +22,6 @@
 
 namespace erock {
 
-    template<typename TValue>
-    constexpr bool is_vector(const std::vector<TValue>&){ return true; }
-
-    template<typename TValue>
-    constexpr bool is_vector(const TValue&){ return false; }
-
     template<typename TValue, typename TClearValue = std::decay_t<TValue>>
     constexpr bool is_inbuilt_v = 
         std::is_same_v<TClearValue, bool> || 

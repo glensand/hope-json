@@ -24,13 +24,15 @@
 namespace erock {
 
     /**
-     * \brief Tries to load JSON file with given name, if succeeded then stores all the loaded values to the related 
-     * fields of the specified structure. 
+     * \brief Tries to parse JSON string, if succeeded then stores all the loaded values to the related 
+     * fields of the structure. The type of the structure is required, obviously; 
      * 
-     * @param file_name The name of the strict JSON file
-     * @typename TValue - Type of the structure which fields matches the objects from JSON file. Each field ot the TValue 
+     * @param json String with json to be parsed;
+     * @param TValue - Type of the structure which fields matches the objects from JSON file. Each field ot the TValue 
      * have to be an instance of the erock::field structure with proper name. All these fields are required in the file, 
      * if the attribute of the object is not present in the file, the default value will be stored to the desired position.
+     * 
+     * \throws std::runtime_error with description of the occurred error (Invalid value, not all braces are placed right e.t.c)
      */ 
     template<typename TValue>
     auto load(std::string_view json) {
@@ -42,11 +44,11 @@ namespace erock {
     }
 
     /**
-     * \brief Opens or creates file with given name (to owerwrite) then stores all contant to these file.
+     * \brief Converts given structure to the JSON DOM tree, then stores it to the string
      */ 
     template<typename TValue>
     auto store(const TValue& value) {
-
+        rapidjson::Document doc;
     }
 }
 

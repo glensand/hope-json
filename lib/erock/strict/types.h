@@ -28,23 +28,45 @@ namespace erock {
     /**
      * Integer type, 64 bit are used to simplify usage in signed-unsigned context
      */
-    using int_t = object<int64_t>;
+    using raw_int_t = int64_t;
 
     /**
      * Floating point type, long double are used so that everyone has enough :)
      */
-    using real_t = object<long double>;
+    using raw_real_t = long double;
 
     /**
      * Boolean type, should be used as is...
      */
-    using bool_t = object<bool>;
+    using raw_bool_t = bool;
 
     /**
+     * std::string (not templated, without any allocators or inner chars customization) 'cause the code has to be 
+     * as simple as possible (idology of the library)
+     */ 
+    using raw_string_t = std::string;
+
+    /**
+     * Named integer, this type has to be used to load/store integer from json
      */
-    using string_t = object<std::string>;
+    using int_t = object<raw_int_t>;
 
     /**
+     * Named floating point value, this type has to be used to load/store floating point value from json
+     */
+    using real_t = object<raw_real_t>;
+
+    /**
+     * Named boolean value, this type has to be used to load/store boolean value from json
+     */
+    using bool_t = object<raw_bool_t>;
+
+    /**
+     * Named string object, this type has to be used to load/store string value from json 
+     */
+    using string_t = object<raw_string_t>;
+
+    /** The only one templated type, represents array(in terms as json); usage is obvious
      */
     template<typename TValue>
     using array_t = object<std::vector<TValue>>;

@@ -20,11 +20,10 @@ int main(){
         "}";
     
     try {
-        using doc_t = erock::object<simple_struct>;
-        auto&& doc = erock::load<doc_t>(json);
+        auto&& doc = erock::load<simple_struct>(json);
 
         std::cout << "Parsed" << std::endl;
-        auto&& tuple = tuple_from_struct(doc.value, hope::field_policy::reference{});
+        auto&& tuple = tuple_from_struct(doc, hope::field_policy::reference{});
         tuple.for_each([&](auto&& field) {
             std::cout << field.name << " : " << field.value << std::endl;
         });
