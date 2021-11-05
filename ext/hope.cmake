@@ -3,7 +3,7 @@ ExternalProject_Add(
     hope
     PREFIX "ext"
     GIT_REPOSITORY "https://github.com/glensand/hope"
-    GIT_TAG 0.0.2
+    GIT_TAG 0.0.4
     TIMEOUT 10
     CMAKE_ARGS
         -DHOPE_BUILD_TESTS=OFF
