@@ -24,60 +24,46 @@
 namespace erock::detail {
 
     /**
-     *  Declaration section
-     */
+     * Declaration section
+     */ 
     template<typename TValue>
-    void load(rapidjson::Value& doc, object<TValue>& val); // declared due to call in extract function
-
-    template<typename TValue>
-    void load_object(rapidjson::Value& doc, TValue& val); // declared due to call in load function
+    void extract(rapidjson::Value& doc, TValue& val);
 
     /**
      * Extract functions section
      */
     inline 
-    void extract(rapidjson::Value& doc, bool_t& val){
-        val = doc[val.name.data()].GetBool();
+    void extract(rapidjson::Value& doc, raw_bool_t& val){
+        val = doc.GetBool();
     }
 
     inline
-    void extract(rapidjson::Value& doc, int_t& val){
-        val = doc[val.name.data()].GetInt();
+    void extract(rapidjson::Value& doc, raw_int_t& val){
+        val = doc.GetInt();
     }
 
     inline
-    void extract(rapidjson::Value& doc, real_t& val){
-        val = doc[val.name.data()].GetDouble();
+    void extract(rapidjson::Value& doc, raw_real_t& val){
+        val = doc.GetDouble();
     }
 
     inline
-    void extract(rapidjson::Value& doc, string_t& val){
-        val = doc[val.name.data()].GetString();
+    void extract(rapidjson::Value& doc, raw_string_t& val){
+        val = doc.GetString();
     }
 
     template<typename TValue>
-    void extract(rapidjson::Value& doc, array_t<TValue>& values){
-        auto&& json_array = doc[values.name.data()];
-        for(auto&& it : json_array.GetArray()) {
+    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values){
+        for(auto&& it : doc.GetArray()) {
             auto&& obj = it;
             TValue cur_value;
-            load_object(it, cur_value);
-            values.value.emplace_back(std::move(cur_value));
+            extract(it, cur_value);
+            values.emplace_back(std::move(cur_value));
         }
     } 
 
     template<typename TValue>
-    void load(rapidjson::Value& doc, object<TValue>& val){
-        if constexpr(is_inbuilt_v<TValue>) {
-            extract(doc, val);
-        } else if constexpr(!is_inbuilt_v<TValue>) { // for msvc
-            auto&& obj = doc[val.name.data()];
-            load_object(obj, val.value);
-        }
-    }
-
-    template<typename TValue>
-    void load_object(rapidjson::Value& doc, TValue& val){
+    void extract(rapidjson::Value& doc, TValue& val){
         auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
         tuple.for_each([&](auto&& field){
             using field_t = std::decay_t<decltype(field)>;
@@ -86,7 +72,7 @@ namespace erock::detail {
                 "must be wrapped with erock::object structure.\n"
                 "It is required 'cause this is only one way how to tell the library what name the object has to has"
             );
-            load(doc, field);
+            extract(doc[field.name.data()], field.value);
         });
     }
 
@@ -96,7 +82,7 @@ namespace erock::detail {
             "EROCK-JSON::load: erock::object type should not be used as wrapper as json document\n"
             "Remove the wrapper or pass value field and try compile again"
         );
-        load_object(doc, val);
+        extract(doc, val);
     }
 
 }

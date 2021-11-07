@@ -47,6 +47,12 @@ namespace erock {
     using raw_string_t = std::string;
 
     /**
+     * Alias to erock array template class (uses standard vector 'cause it is quete simple)
+     */ 
+    template<typename TValue>
+    using raw_array_t = std::vector<TValue>;
+
+    /**
      * Named integer, this type has to be used to load/store integer from json
      */
     using int_t = object<raw_int_t>;
@@ -69,7 +75,7 @@ namespace erock {
     /** The only one templated type, represents array(in terms as json); usage is obvious
      */
     template<typename TValue>
-    using array_t = object<std::vector<TValue>>;
+    using array_t = object<raw_array_t<TValue>>;
 
 }
 

@@ -24,10 +24,10 @@ namespace erock {
 
     template<typename TValue, typename TClearValue = std::decay_t<TValue>>
     constexpr bool is_inbuilt_v = 
-        std::is_same_v<TClearValue, bool> || 
-        std::is_same_v<TClearValue, int64_t> ||
-        std::is_same_v<TClearValue, std::string> ||
-        std::is_same_v<TClearValue, long double> ||
+        std::is_same_v<TClearValue, raw_bool_t> || 
+        std::is_same_v<TClearValue, raw_int_t> ||
+        std::is_same_v<TClearValue, raw_string_t> ||
+        std::is_same_v<TClearValue, raw_real_t> ||
         hope::is_vector_v<TClearValue>;
 
 }

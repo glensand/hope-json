@@ -30,7 +30,7 @@ namespace{
     };
 
     struct struct_with_simple_array final {
-        //erock::array_t<
+        erock::array_t<erock::raw_int_t> v0{"simple_array"};
     };
 
     constexpr auto* simple_json = 
@@ -72,6 +72,11 @@ namespace{
             "],"
             "\"field2\" : 11.0"
         "}";
+
+    constexpr auto* simple_array_json = 
+        "{"
+            "\"simple_array\" : [1,2,3,4,5,6,7]"
+        "}";
 }
 
 TEST(Initial, simple_struct){
@@ -101,4 +106,11 @@ TEST(Initial, struct_with_struct_array){
         ASSERT_TRUE(v.v2);
         ASSERT_TRUE(std::abs(v.v3 - 11.0) < FLT_EPSILON);
     }
+}
+
+TEST(Initial, struct_with_simple_array){
+    using doc_t = struct_with_struct_array;
+    auto&& doc = erock::load<struct_with_simple_array>(simple_array_json);
+    auto&& vec = doc.v0.value;
+    ASSERT_TRUE(vec.size() == 7);
 }
