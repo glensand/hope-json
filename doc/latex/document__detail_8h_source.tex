@@ -1,0 +1,33 @@
+\hypertarget{document__detail_8h_source}{}\doxysection{document\+\_\+detail.\+h}
+\label{document__detail_8h_source}\index{lib/erock/strict/document\_detail.h@{lib/erock/strict/document\_detail.h}}
+\mbox{\hyperlink{document__detail_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Copyright (C) 2021 Gleb Bezborodov -\/ All Rights Reserved}}
+\DoxyCodeLine{2 \textcolor{comment}{ * You may use, distribute and modify this code under the}}
+\DoxyCodeLine{3 \textcolor{comment}{ * terms of the MIT license.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * You should have received a copy of the MIT license with}}
+\DoxyCodeLine{6 \textcolor{comment}{ * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-\/rock-\/json}}
+\DoxyCodeLine{7 \textcolor{comment}{ */}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}rapidjson/document.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}rapidjson/error/en.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }erock::detail \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keyword}{inline} }
+\DoxyCodeLine{25     \textcolor{keywordtype}{void} assert\_load\_valid(\textcolor{keyword}{const} rapidjson::ParseResult\& ok) \{}
+\DoxyCodeLine{26         \textcolor{keywordflow}{if} (!ok) \{}
+\DoxyCodeLine{27             \textcolor{keyword}{auto} message = std::string(GetParseError\_En(ok.Code())) +}
+\DoxyCodeLine{28                 \textcolor{stringliteral}{"{}\(\backslash\)nOffset: "{}} + std::to\_string(ok.Offset());}
+\DoxyCodeLine{29             \textcolor{keywordflow}{throw} std::runtime\_error(message);}
+\DoxyCodeLine{30         \}}
+\DoxyCodeLine{31     \}}
+\DoxyCodeLine{32 \}}
+\DoxyCodeLine{33 }
+
+\end{DoxyCode}

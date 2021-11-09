@@ -1,0 +1,57 @@
+\hypertarget{load_8h}{}\doxysection{lib/erock/strict/load.h File Reference}
+\label{load_8h}\index{lib/erock/strict/load.h@{lib/erock/strict/load.h}}
+
+
+File contains implementations of the json loading functions. These functions should not be used directly;.  
+
+
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include \char`\"{}rapidjson/document.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hope/tuple/tuple\+\_\+from\+\_\+struct.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}erock/strict/types.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}erock/strict/type\+\_\+traits.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}erock/strict/object\+\_\+traits.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename TValue $>$ }\\void \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{erock\+::detail\+::extract}} (rapidjson\+::\+Value \&doc, TValue \&val)
+\item 
+void \mbox{\hyperlink{load_8h_ae401dabdf50e46dbbc845b7b43f3fc2f}{erock\+::detail\+::extract}} (rapidjson\+::\+Value \&doc, raw\+\_\+bool\+\_\+t \&val)
+\item 
+\mbox{\Hypertarget{load_8h_a5963cf79c32774f68d1da74fb8c2877f}\label{load_8h_a5963cf79c32774f68d1da74fb8c2877f}} 
+void {\bfseries erock\+::detail\+::extract} (rapidjson\+::\+Value \&doc, raw\+\_\+int\+\_\+t \&val)
+\item 
+\mbox{\Hypertarget{load_8h_a45c74ccda56366e4d9debbb81d7fc651}\label{load_8h_a45c74ccda56366e4d9debbb81d7fc651}} 
+void {\bfseries erock\+::detail\+::extract} (rapidjson\+::\+Value \&doc, raw\+\_\+real\+\_\+t \&val)
+\item 
+\mbox{\Hypertarget{load_8h_ab3f713779338d583cf1e36a81672d79b}\label{load_8h_ab3f713779338d583cf1e36a81672d79b}} 
+void {\bfseries erock\+::detail\+::extract} (rapidjson\+::\+Value \&doc, raw\+\_\+string\+\_\+t \&val)
+\item 
+\mbox{\Hypertarget{load_8h_aa4cde51280fe07a61dae7dbc66e0ce2e}\label{load_8h_aa4cde51280fe07a61dae7dbc66e0ce2e}} 
+{\footnotesize template$<$typename TValue $>$ }\\void {\bfseries erock\+::detail\+::extract} (rapidjson\+::\+Value \&doc, raw\+\_\+array\+\_\+t$<$ TValue $>$ \&values)
+\item 
+\mbox{\Hypertarget{load_8h_a4298f34a8dee0777d598dbe90e5fa4e6}\label{load_8h_a4298f34a8dee0777d598dbe90e5fa4e6}} 
+{\footnotesize template$<$typename TValue $>$ }\\void {\bfseries erock\+::detail\+::load} (rapidjson\+::\+Document \&doc, TValue \&val)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File contains implementations of the json loading functions. These functions should not be used directly;. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{load_8h_ae401dabdf50e46dbbc845b7b43f3fc2f}\label{load_8h_ae401dabdf50e46dbbc845b7b43f3fc2f}} 
+\index{load.h@{load.h}!extract@{extract}}
+\index{extract@{extract}!load.h@{load.h}}
+\doxysubsubsection{\texorpdfstring{extract()}{extract()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void erock\+::detail\+::extract (\begin{DoxyParamCaption}\item[{rapidjson\+::\+Value \&}]{doc,  }\item[{\mbox{\hyperlink{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}{raw\+\_\+bool\+\_\+t}} \&}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Extract functions section \mbox{\Hypertarget{load_8h_a69a5078f7725e097bbf587a7417ff5db}\label{load_8h_a69a5078f7725e097bbf587a7417ff5db}} 
+\index{load.h@{load.h}!extract@{extract}}
+\index{extract@{extract}!load.h@{load.h}}
+\doxysubsubsection{\texorpdfstring{extract()}{extract()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename TValue $>$ \\
+void erock\+::detail\+::extract (\begin{DoxyParamCaption}\item[{rapidjson\+::\+Value \&}]{doc,  }\item[{TValue \&}]{val }\end{DoxyParamCaption})}
+
+Declaration section 

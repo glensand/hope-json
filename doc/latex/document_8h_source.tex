@@ -1,0 +1,40 @@
+\hypertarget{document_8h_source}{}\doxysection{document.\+h}
+\label{document_8h_source}\index{lib/erock/strict/document.h@{lib/erock/strict/document.h}}
+\mbox{\hyperlink{document_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Copyright (C) 2021 Gleb Bezborodov -\/ All Rights Reserved}}
+\DoxyCodeLine{2 \textcolor{comment}{ * You may use, distribute and modify this code under the}}
+\DoxyCodeLine{3 \textcolor{comment}{ * terms of the MIT license.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * You should have received a copy of the MIT license with}}
+\DoxyCodeLine{6 \textcolor{comment}{ * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-\/rock-\/json}}
+\DoxyCodeLine{7 \textcolor{comment}{ */}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{load_8h}{erock/strict/load.h}}"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{store_8h}{erock/strict/store.h}}"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{document__detail_8h}{erock/strict/document\_detail.h}}"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string\_view>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }erock \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{37     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{38     \textcolor{keyword}{auto} \mbox{\hyperlink{document_8h_ade00c40b10a08914fbfc0d553dea5682}{load}}(std::string\_view json) \{}
+\DoxyCodeLine{39         rapidjson::Document doc;}
+\DoxyCodeLine{40         detail::assert\_load\_valid(doc.Parse(json.data()));}
+\DoxyCodeLine{41         TValue \mbox{\hyperlink{structerock_1_1object}{object}};}
+\DoxyCodeLine{42         detail::load(doc, \textcolor{keywordtype}{object});}
+\DoxyCodeLine{43         \textcolor{keywordflow}{return} \mbox{\hyperlink{structerock_1_1object}{object}};}
+\DoxyCodeLine{44     \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{49     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{50     \textcolor{keyword}{auto} \mbox{\hyperlink{document_8h_a8200129bff472b1e199f98d6cd6c9df6}{store}}(\textcolor{keyword}{const} TValue\& value) \{}
+\DoxyCodeLine{51         rapidjson::Document doc;}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53 \}}
+\DoxyCodeLine{54 }
+
+\end{DoxyCode}

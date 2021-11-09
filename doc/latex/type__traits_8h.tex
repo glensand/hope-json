@@ -1,0 +1,39 @@
+\hypertarget{type__traits_8h}{}\doxysection{lib/erock/strict/type\+\_\+traits.h File Reference}
+\label{type__traits_8h}\index{lib/erock/strict/type\_traits.h@{lib/erock/strict/type\_traits.h}}
+
+
+File contains definitions of the strict json types.  
+
+
+{\ttfamily \#include \char`\"{}erock/strict/types.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hope/components/user\+\_\+defined\+\_\+types.\+h\char`\"{}}\newline
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename TValue , typename TClear\+Value  = std\+::decay\+\_\+t$<$\+TValue$>$$>$ }\\constexpr bool \mbox{\hyperlink{type__traits_8h_a2f38a197aa156945f286ee54cc83d36a}{erock\+::is\+\_\+inbuilt\+\_\+v}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File contains definitions of the strict json types. 
+
+Strict mean the order of the filds cannot be changed, and each subobject of the json object cannot be null. This rule helps library to convert text json to their structure representation 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{type__traits_8h_a2f38a197aa156945f286ee54cc83d36a}\label{type__traits_8h_a2f38a197aa156945f286ee54cc83d36a}} 
+\index{type\_traits.h@{type\_traits.h}!is\_inbuilt\_v@{is\_inbuilt\_v}}
+\index{is\_inbuilt\_v@{is\_inbuilt\_v}!type\_traits.h@{type\_traits.h}}
+\doxysubsubsection{\texorpdfstring{is\_inbuilt\_v}{is\_inbuilt\_v}}
+{\footnotesize\ttfamily template$<$typename TValue , typename TClear\+Value  = std\+::decay\+\_\+t$<$\+TValue$>$$>$ \\
+constexpr bool erock\+::is\+\_\+inbuilt\+\_\+v\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= }
+\DoxyCodeLine{        std::is\_same\_v<TClearValue, raw\_bool\_t> || }
+\DoxyCodeLine{        std::is\_same\_v<TClearValue, raw\_int\_t> ||}
+\DoxyCodeLine{        std::is\_same\_v<TClearValue, raw\_string\_t> ||}
+\DoxyCodeLine{        std::is\_same\_v<TClearValue, raw\_real\_t> ||}
+\DoxyCodeLine{        hope::is\_vector\_v<TClearValue>}
+
+\end{DoxyCode}

@@ -1,0 +1,31 @@
+\hypertarget{type__traits_8h_source}{}\doxysection{type\+\_\+traits.\+h}
+\label{type__traits_8h_source}\index{lib/erock/strict/type\_traits.h@{lib/erock/strict/type\_traits.h}}
+\mbox{\hyperlink{type__traits_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Copyright (C) 2021 Gleb Bezborodov -\/ All Rights Reserved}}
+\DoxyCodeLine{2 \textcolor{comment}{ * You may use, distribute and modify this code under the}}
+\DoxyCodeLine{3 \textcolor{comment}{ * terms of the MIT license.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * You should have received a copy of the MIT license with}}
+\DoxyCodeLine{6 \textcolor{comment}{ * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-\/rock-\/json}}
+\DoxyCodeLine{7 \textcolor{comment}{ */}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8h}{erock/strict/types.h}}"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}hope/components/user\_defined\_types.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }erock \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue, \textcolor{keyword}{typename} TClearValue = std::decay\_t<TValue>>}
+\DoxyCodeLine{26     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_inbuilt\_v = }
+\DoxyCodeLine{27         std::is\_same\_v<TClearValue, raw\_bool\_t> || }
+\DoxyCodeLine{28         std::is\_same\_v<TClearValue, raw\_int\_t> ||}
+\DoxyCodeLine{29         std::is\_same\_v<TClearValue, raw\_string\_t> ||}
+\DoxyCodeLine{30         std::is\_same\_v<TClearValue, raw\_real\_t> ||}
+\DoxyCodeLine{31         hope::is\_vector\_v<TClearValue>;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \}}
+\DoxyCodeLine{34 }
+
+\end{DoxyCode}

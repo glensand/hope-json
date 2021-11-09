@@ -1,0 +1,48 @@
+\hypertarget{types_8h_source}{}\doxysection{types.\+h}
+\label{types_8h_source}\index{lib/erock/strict/types.h@{lib/erock/strict/types.h}}
+\mbox{\hyperlink{types_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Copyright (C) 2021 Gleb Bezborodov -\/ All Rights Reserved}}
+\DoxyCodeLine{2 \textcolor{comment}{ * You may use, distribute and modify this code under the}}
+\DoxyCodeLine{3 \textcolor{comment}{ * terms of the MIT license.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * You should have received a copy of the MIT license with}}
+\DoxyCodeLine{6 \textcolor{comment}{ * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-\/rock-\/json}}
+\DoxyCodeLine{7 \textcolor{comment}{ */}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{object_8h}{erock/strict/object.h}}"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }erock \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31     \textcolor{keyword}{using} \mbox{\hyperlink{types_8h_aed125ea1380c27577e1dea71d69bfa95}{raw\_int\_t}} = int64\_t;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{36     \textcolor{keyword}{using} \mbox{\hyperlink{types_8h_af4d12eec48d6c537aecc75701e922f5a}{raw\_real\_t}} = \textcolor{keywordtype}{long} double;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{41     \textcolor{keyword}{using} \mbox{\hyperlink{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}{raw\_bool\_t}} = bool;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{47     \textcolor{keyword}{using} \mbox{\hyperlink{types_8h_a6d87d851269e7279bcd71a321f0ee639}{raw\_string\_t}} = std::string;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{53     \textcolor{keyword}{using} \mbox{\hyperlink{types_8h_a29bae5facbd131a354ec8e047c1dc531}{raw\_array\_t}} = std::vector<TValue>;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{58     \textcolor{keyword}{using} \mbox{\hyperlink{structerock_1_1object}{int\_t}} = \mbox{\hyperlink{structerock_1_1object}{object<raw\_int\_t>}};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{63     \textcolor{keyword}{using} \mbox{\hyperlink{structerock_1_1object}{real\_t}} = \mbox{\hyperlink{structerock_1_1object}{object<raw\_real\_t>}};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68     \textcolor{keyword}{using} \mbox{\hyperlink{structerock_1_1object}{bool\_t}} = \mbox{\hyperlink{structerock_1_1object}{object<raw\_bool\_t>}};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{73     \textcolor{keyword}{using} \mbox{\hyperlink{structerock_1_1object}{string\_t}} = \mbox{\hyperlink{structerock_1_1object}{object<raw\_string\_t>}};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{77     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{78     \textcolor{keyword}{using} \mbox{\hyperlink{structerock_1_1object}{array\_t}} = \mbox{\hyperlink{structerock_1_1object}{object<raw\_array\_t<TValue>}}>;}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \}}
+\DoxyCodeLine{81 }
+
+\end{DoxyCode}

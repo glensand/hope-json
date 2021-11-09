@@ -1,0 +1,51 @@
+\hypertarget{document_8h}{}\doxysection{lib/erock/strict/document.h File Reference}
+\label{document_8h}\index{lib/erock/strict/document.h@{lib/erock/strict/document.h}}
+
+
+File contains load/store functions.  
+
+
+{\ttfamily \#include \char`\"{}erock/strict/load.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}erock/strict/store.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}erock/strict/document\+\_\+detail.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename TValue $>$ }\\auto \mbox{\hyperlink{document_8h_ade00c40b10a08914fbfc0d553dea5682}{erock\+::load}} (std\+::string\+\_\+view json)
+\begin{DoxyCompactList}\small\item\em Tries to parse JSON string, if succeeded then stores all the loaded values to the related fields of the structure. The type of the structure is required, obviously;. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{document_8h_a8200129bff472b1e199f98d6cd6c9df6}\label{document_8h_a8200129bff472b1e199f98d6cd6c9df6}} 
+{\footnotesize template$<$typename TValue $>$ }\\auto {\bfseries erock\+::store} (const TValue \&value)
+\begin{DoxyCompactList}\small\item\em Converts given structure to the JSON DOM tree, then stores it to the string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File contains load/store functions. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{document_8h_ade00c40b10a08914fbfc0d553dea5682}\label{document_8h_ade00c40b10a08914fbfc0d553dea5682}} 
+\index{document.h@{document.h}!load@{load}}
+\index{load@{load}!document.h@{document.h}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily template$<$typename TValue $>$ \\
+auto erock\+::load (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{json }\end{DoxyParamCaption})}
+
+
+
+Tries to parse JSON string, if succeeded then stores all the loaded values to the related fields of the structure. The type of the structure is required, obviously;. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em json} & String with json to be parsed; \\
+\hline
+{\em TValue} & -\/ Type of the structure which fields matches the objects from JSON file. Each field ot the TValue have to be an instance of the erock\+::field structure with proper name. All these fields are required in the file, if the attribute of the object is not present in the file, the default value will be stored to the desired position.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & with description of the occurred error (Invalid value, not all braces are placed right e.\+t.\+c) \\
+\hline
+\end{DoxyExceptions}

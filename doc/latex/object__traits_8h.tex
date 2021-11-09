@@ -1,0 +1,41 @@
+\hypertarget{object__traits_8h}{}\doxysection{lib/erock/strict/object\+\_\+traits.h File Reference}
+\label{object__traits_8h}\index{lib/erock/strict/object\_traits.h@{lib/erock/strict/object\_traits.h}}
+
+
+File contains definitions of the strict json object.  
+
+
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include \char`\"{}erock/strict/object.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structerock_1_1is__object}{erock\+::is\+\_\+object$<$ T $>$}}
+\item 
+struct \mbox{\hyperlink{structerock_1_1is__object_3_01object_3_01_t_value_01_4_01_4}{erock\+::is\+\_\+object$<$ object$<$ TValue $>$ $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename TValue $>$ }\\constexpr bool \mbox{\hyperlink{object__traits_8h_ab1f7d5bfab511d06a8f3efae56fe92d3}{erock\+::is\+\_\+object\+\_\+v}} = is\+\_\+object$<$TValue$>$\+::value
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File contains definitions of the strict json object. 
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{object__traits_8h_ab1f7d5bfab511d06a8f3efae56fe92d3}\label{object__traits_8h_ab1f7d5bfab511d06a8f3efae56fe92d3}} 
+\index{object\_traits.h@{object\_traits.h}!is\_object\_v@{is\_object\_v}}
+\index{is\_object\_v@{is\_object\_v}!object\_traits.h@{object\_traits.h}}
+\doxysubsubsection{\texorpdfstring{is\_object\_v}{is\_object\_v}}
+{\footnotesize\ttfamily template$<$typename TValue $>$ \\
+constexpr bool erock\+::is\+\_\+object\+\_\+v = is\+\_\+object$<$TValue$>$\+::value\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+Checks if the specified type is object in terms of the erock library. NOTE\+: Only erock objects might be processed by load/store operations 
+\begin{DoxyParams}{Parameters}
+{\em TValue} & the type to be checked \\
+\hline
+\end{DoxyParams}

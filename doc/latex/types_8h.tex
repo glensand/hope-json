@@ -1,0 +1,106 @@
+\hypertarget{types_8h}{}\doxysection{lib/erock/strict/types.h File Reference}
+\label{types_8h}\index{lib/erock/strict/types.h@{lib/erock/strict/types.h}}
+
+
+File contains definitions of the strict json types.  
+
+
+{\ttfamily \#include \char`\"{}erock/strict/object.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{types_8h_aed125ea1380c27577e1dea71d69bfa95}{erock\+::raw\+\_\+int\+\_\+t}} = int64\+\_\+t
+\item 
+using \mbox{\hyperlink{types_8h_af4d12eec48d6c537aecc75701e922f5a}{erock\+::raw\+\_\+real\+\_\+t}} = long double
+\item 
+using \mbox{\hyperlink{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}{erock\+::raw\+\_\+bool\+\_\+t}} = bool
+\item 
+using \mbox{\hyperlink{types_8h_a6d87d851269e7279bcd71a321f0ee639}{erock\+::raw\+\_\+string\+\_\+t}} = std\+::string
+\item 
+{\footnotesize template$<$typename TValue $>$ }\\using \mbox{\hyperlink{types_8h_a29bae5facbd131a354ec8e047c1dc531}{erock\+::raw\+\_\+array\+\_\+t}} = std\+::vector$<$ TValue $>$
+\item 
+using \mbox{\hyperlink{types_8h_a5ac5fb09e1faebd045a1e0d98e53b2f7}{erock\+::int\+\_\+t}} = object$<$ raw\+\_\+int\+\_\+t $>$
+\item 
+using \mbox{\hyperlink{types_8h_a561e4af4e3d2f9d4619a3bc834bcc896}{erock\+::real\+\_\+t}} = object$<$ raw\+\_\+real\+\_\+t $>$
+\item 
+using \mbox{\hyperlink{types_8h_a19f5c14bf2762d224a0d216312b8d61e}{erock\+::bool\+\_\+t}} = object$<$ raw\+\_\+bool\+\_\+t $>$
+\item 
+using \mbox{\hyperlink{types_8h_a72e5376cafe9652051868af3714bdfb5}{erock\+::string\+\_\+t}} = object$<$ raw\+\_\+string\+\_\+t $>$
+\item 
+{\footnotesize template$<$typename TValue $>$ }\\using \mbox{\hyperlink{types_8h_abbc78e83ca314d52a904790ec5e298a3}{erock\+::array\+\_\+t}} = object$<$ raw\+\_\+array\+\_\+t$<$ TValue $>$ $>$
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File contains definitions of the strict json types. 
+
+Strict mean the order of the filds cannot be changed, and each subobject of the json object cannot be null. This rule helps library to convert text json to their structure representation 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{types_8h_abbc78e83ca314d52a904790ec5e298a3}\label{types_8h_abbc78e83ca314d52a904790ec5e298a3}} 
+\index{types.h@{types.h}!array\_t@{array\_t}}
+\index{array\_t@{array\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{array\_t}{array\_t}}
+{\footnotesize\ttfamily template$<$typename TValue $>$ \\
+using \mbox{\hyperlink{types_8h_abbc78e83ca314d52a904790ec5e298a3}{erock\+::array\+\_\+t}} = typedef object$<$raw\+\_\+array\+\_\+t$<$TValue$>$ $>$}
+
+The only one templated type, represents array(in terms as json); usage is obvious \mbox{\Hypertarget{types_8h_a19f5c14bf2762d224a0d216312b8d61e}\label{types_8h_a19f5c14bf2762d224a0d216312b8d61e}} 
+\index{types.h@{types.h}!bool\_t@{bool\_t}}
+\index{bool\_t@{bool\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{bool\_t}{bool\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_a19f5c14bf2762d224a0d216312b8d61e}{erock\+::bool\+\_\+t}} = typedef object$<$raw\+\_\+bool\+\_\+t$>$}
+
+Named boolean value, this type has to be used to load/store boolean value from json \mbox{\Hypertarget{types_8h_a5ac5fb09e1faebd045a1e0d98e53b2f7}\label{types_8h_a5ac5fb09e1faebd045a1e0d98e53b2f7}} 
+\index{types.h@{types.h}!int\_t@{int\_t}}
+\index{int\_t@{int\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{int\_t}{int\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_a5ac5fb09e1faebd045a1e0d98e53b2f7}{erock\+::int\+\_\+t}} = typedef object$<$raw\+\_\+int\+\_\+t$>$}
+
+Named integer, this type has to be used to load/store integer from json \mbox{\Hypertarget{types_8h_a29bae5facbd131a354ec8e047c1dc531}\label{types_8h_a29bae5facbd131a354ec8e047c1dc531}} 
+\index{types.h@{types.h}!raw\_array\_t@{raw\_array\_t}}
+\index{raw\_array\_t@{raw\_array\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{raw\_array\_t}{raw\_array\_t}}
+{\footnotesize\ttfamily template$<$typename TValue $>$ \\
+using \mbox{\hyperlink{types_8h_a29bae5facbd131a354ec8e047c1dc531}{erock\+::raw\+\_\+array\+\_\+t}} = typedef std\+::vector$<$TValue$>$}
+
+Alias to erock array template class (uses standard vector \textquotesingle{}cause it is quete simple) \mbox{\Hypertarget{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}\label{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}} 
+\index{types.h@{types.h}!raw\_bool\_t@{raw\_bool\_t}}
+\index{raw\_bool\_t@{raw\_bool\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{raw\_bool\_t}{raw\_bool\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}{erock\+::raw\+\_\+bool\+\_\+t}} = typedef bool}
+
+Boolean type, should be used as is... \mbox{\Hypertarget{types_8h_aed125ea1380c27577e1dea71d69bfa95}\label{types_8h_aed125ea1380c27577e1dea71d69bfa95}} 
+\index{types.h@{types.h}!raw\_int\_t@{raw\_int\_t}}
+\index{raw\_int\_t@{raw\_int\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{raw\_int\_t}{raw\_int\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_aed125ea1380c27577e1dea71d69bfa95}{erock\+::raw\+\_\+int\+\_\+t}} = typedef int64\+\_\+t}
+
+Integer type, 64 bit are used to simplify usage in signed-\/unsigned context \mbox{\Hypertarget{types_8h_af4d12eec48d6c537aecc75701e922f5a}\label{types_8h_af4d12eec48d6c537aecc75701e922f5a}} 
+\index{types.h@{types.h}!raw\_real\_t@{raw\_real\_t}}
+\index{raw\_real\_t@{raw\_real\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{raw\_real\_t}{raw\_real\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_af4d12eec48d6c537aecc75701e922f5a}{erock\+::raw\+\_\+real\+\_\+t}} = typedef long double}
+
+Floating point type, long double are used so that everyone has enough \+:) \mbox{\Hypertarget{types_8h_a6d87d851269e7279bcd71a321f0ee639}\label{types_8h_a6d87d851269e7279bcd71a321f0ee639}} 
+\index{types.h@{types.h}!raw\_string\_t@{raw\_string\_t}}
+\index{raw\_string\_t@{raw\_string\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{raw\_string\_t}{raw\_string\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_a6d87d851269e7279bcd71a321f0ee639}{erock\+::raw\+\_\+string\+\_\+t}} = typedef std\+::string}
+
+std\+::string (not templated, without any allocators or inner chars customization) \textquotesingle{}cause the code has to be as simple as possible (idology of the library) \mbox{\Hypertarget{types_8h_a561e4af4e3d2f9d4619a3bc834bcc896}\label{types_8h_a561e4af4e3d2f9d4619a3bc834bcc896}} 
+\index{types.h@{types.h}!real\_t@{real\_t}}
+\index{real\_t@{real\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{real\_t}{real\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_a561e4af4e3d2f9d4619a3bc834bcc896}{erock\+::real\+\_\+t}} = typedef object$<$raw\+\_\+real\+\_\+t$>$}
+
+Named floating point value, this type has to be used to load/store floating point value from json \mbox{\Hypertarget{types_8h_a72e5376cafe9652051868af3714bdfb5}\label{types_8h_a72e5376cafe9652051868af3714bdfb5}} 
+\index{types.h@{types.h}!string\_t@{string\_t}}
+\index{string\_t@{string\_t}!types.h@{types.h}}
+\doxysubsubsection{\texorpdfstring{string\_t}{string\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{types_8h_a72e5376cafe9652051868af3714bdfb5}{erock\+::string\+\_\+t}} = typedef object$<$raw\+\_\+string\+\_\+t$>$}
+
+Named string object, this type has to be used to load/store string value from json 

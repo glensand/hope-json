@@ -1,0 +1,83 @@
+\hypertarget{load_8h_source}{}\doxysection{load.\+h}
+\label{load_8h_source}\index{lib/erock/strict/load.h@{lib/erock/strict/load.h}}
+\mbox{\hyperlink{load_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Copyright (C) 2021 Gleb Bezborodov -\/ All Rights Reserved}}
+\DoxyCodeLine{2 \textcolor{comment}{ * You may use, distribute and modify this code under the}}
+\DoxyCodeLine{3 \textcolor{comment}{ * terms of the MIT license.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * You should have received a copy of the MIT license with}}
+\DoxyCodeLine{6 \textcolor{comment}{ * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-\/rock-\/json}}
+\DoxyCodeLine{7 \textcolor{comment}{ */}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string\_view>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}rapidjson/document.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}hope/tuple/tuple\_from\_struct.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8h}{erock/strict/types.h}}"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{type__traits_8h}{erock/strict/type\_traits.h}}"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{object__traits_8h}{erock/strict/object\_traits.h}}"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }erock::detail \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{29     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{30     \textcolor{keywordtype}{void} \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(rapidjson::Value\& doc, TValue\& val);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{35     \textcolor{keyword}{inline} }
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(rapidjson::Value\& doc, \mbox{\hyperlink{types_8h_af4d1374abd8f9b90bc42341d1384ecc6}{raw\_bool\_t}}\& val)\{}
+\DoxyCodeLine{37         val = doc.GetBool();}
+\DoxyCodeLine{38     \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keyword}{inline}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{void} extract(rapidjson::Value\& doc, \mbox{\hyperlink{types_8h_aed125ea1380c27577e1dea71d69bfa95}{raw\_int\_t}}\& val)\{}
+\DoxyCodeLine{42         val = doc.GetInt();}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \textcolor{keyword}{inline}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{void} extract(rapidjson::Value\& doc, raw\_real\_t\& val)\{}
+\DoxyCodeLine{47         val = doc.GetDouble();}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keyword}{inline}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{void} \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(rapidjson::Value\& doc, raw\_string\_t\& val)\{}
+\DoxyCodeLine{52         val = doc.GetString();}
+\DoxyCodeLine{53     \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(rapidjson::Value\& doc, raw\_array\_t<TValue>\& values)\{}
+\DoxyCodeLine{57         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}\&\& it : doc.GetArray()) \{}
+\DoxyCodeLine{58             \textcolor{keyword}{auto}\&\& obj = it;}
+\DoxyCodeLine{59             TValue cur\_value;}
+\DoxyCodeLine{60             \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(it, cur\_value);}
+\DoxyCodeLine{61             values.emplace\_back(std::move(cur\_value));}
+\DoxyCodeLine{62         \}}
+\DoxyCodeLine{63     \} }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{66     \textcolor{keywordtype}{void} \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(rapidjson::Value\& doc, TValue\& val)\{}
+\DoxyCodeLine{67         \textcolor{keyword}{auto}\&\& tuple = hope::tuple\_from\_struct(val, hope::field\_policy::reference\{\});}
+\DoxyCodeLine{68         tuple.for\_each([\&](\textcolor{keyword}{auto}\&\& field)\{}
+\DoxyCodeLine{69             \textcolor{keyword}{using} field\_t = std::decay\_t<\textcolor{keyword}{decltype}(field)>;}
+\DoxyCodeLine{70             \textcolor{keyword}{static\_assert}(is\_object\_v<field\_t>, }
+\DoxyCodeLine{71                 \textcolor{stringliteral}{"{}EROCK-\/JSON::load\_object: All the types of the user defined structure"{}}}
+\DoxyCodeLine{72                 \textcolor{stringliteral}{"{}must be wrapped with erock::object structure.\(\backslash\)n"{}}}
+\DoxyCodeLine{73                 \textcolor{stringliteral}{"{}It is required 'cause this is only one way how to tell the library what name the object has to has"{}}}
+\DoxyCodeLine{74             );}
+\DoxyCodeLine{75             \mbox{\hyperlink{load_8h_a69a5078f7725e097bbf587a7417ff5db}{extract}}(doc[field.name.data()], field.value);}
+\DoxyCodeLine{76         \});}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{80     \textcolor{keywordtype}{void} \mbox{\hyperlink{document_8h_ade00c40b10a08914fbfc0d553dea5682}{load}}(rapidjson::Document\& doc, TValue\& val)\{}
+\DoxyCodeLine{81         \textcolor{keyword}{static\_assert}(!is\_object\_v<TValue>, }
+\DoxyCodeLine{82             \textcolor{stringliteral}{"{}EROCK-\/JSON::load: erock::object type should not be used as wrapper as json document\(\backslash\)n"{}}}
+\DoxyCodeLine{83             \textcolor{stringliteral}{"{}Remove the wrapper or pass value field and try compile again"{}}}
+\DoxyCodeLine{84         );}
+\DoxyCodeLine{85         extract(doc, val);}
+\DoxyCodeLine{86     \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \}}
+\DoxyCodeLine{89 }
+
+\end{DoxyCode}

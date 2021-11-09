@@ -1,0 +1,42 @@
+\hypertarget{object_8h_source}{}\doxysection{object.\+h}
+\label{object_8h_source}\index{lib/erock/strict/object.h@{lib/erock/strict/object.h}}
+\mbox{\hyperlink{object_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Copyright (C) 2021 Gleb Bezborodov -\/ All Rights Reserved}}
+\DoxyCodeLine{2 \textcolor{comment}{ * You may use, distribute and modify this code under the}}
+\DoxyCodeLine{3 \textcolor{comment}{ * terms of the MIT license.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * You should have received a copy of the MIT license with}}
+\DoxyCodeLine{6 \textcolor{comment}{ * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-\/rock-\/json}}
+\DoxyCodeLine{7 \textcolor{comment}{ */}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string\_view>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }erock  \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{27     \textcolor{keyword}{template}<\textcolor{keyword}{typename} TValue>}
+\DoxyCodeLine{28     \textcolor{keyword}{struct }\mbox{\hyperlink{structerock_1_1object}{object}} final \{}
+\DoxyCodeLine{32         \textcolor{keyword}{const} std::string\_view \mbox{\hyperlink{structerock_1_1object_a33e533fb18f141280503bee73384efbd}{name}};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{37         TValue \mbox{\hyperlink{structerock_1_1object_a6545adc8e7c7e8df8ab35ec42e37323f}{value}};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{42         \textcolor{keyword}{operator} \textcolor{keyword}{const} TValue\&() \textcolor{keyword}{const} \{}
+\DoxyCodeLine{43             \textcolor{keywordflow}{return} \mbox{\hyperlink{structerock_1_1object_a6545adc8e7c7e8df8ab35ec42e37323f}{value}};}
+\DoxyCodeLine{44         \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46         \textcolor{keyword}{operator} TValue\&() \{}
+\DoxyCodeLine{47             \textcolor{keywordflow}{return} \mbox{\hyperlink{structerock_1_1object_a6545adc8e7c7e8df8ab35ec42e37323f}{value}};}
+\DoxyCodeLine{48         \}}
+\DoxyCodeLine{49         }
+\DoxyCodeLine{50         \textcolor{keywordtype}{object}\& operator=(\textcolor{keyword}{const} TValue\& v)\{}
+\DoxyCodeLine{51             \mbox{\hyperlink{structerock_1_1object_a6545adc8e7c7e8df8ab35ec42e37323f}{value}} = v;}
+\DoxyCodeLine{52             \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{53         \}}
+\DoxyCodeLine{54     \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \}}
+\DoxyCodeLine{57 }
+
+\end{DoxyCode}
