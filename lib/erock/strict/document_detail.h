@@ -9,13 +9,14 @@
 /*! \defgroup <strict> Strict
     @{
     \file
-    \brief File contains load/store functions
+    \brief File contains utility functions for load operations
 */
 
 #pragma once
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
+#include "hope/components/typemap.h"
 #include <stdexcept>
 #include <string>
 
@@ -24,11 +25,13 @@ namespace erock::detail {
     inline 
     void assert_load_valid(const rapidjson::ParseResult& ok) {
         if (!ok) {
-            auto message = std::string(GetParseError_En(ok.Code())) +
-                "\nOffset: " + std::to_string(ok.Offset());
-            throw std::runtime_error(message);
+            throw std::runtime_error(
+                std::string(GetParseError_En(ok.Code())) +
+                "\nOffset: " + std::to_string(ok.Offset())
+            );
         }
     }
+
 }
 
 /*! @} */

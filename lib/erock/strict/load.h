@@ -15,11 +15,11 @@
 #pragma once
 
 #include <string_view>
-#include "rapidjson/document.h"
 #include "hope/tuple/tuple_from_struct.h"
 #include "erock/strict/types.h"
 #include "erock/strict/type_traits.h"
 #include "erock/strict/object_traits.h"
+#include "erock/strict/load_detail.h"
 
 namespace erock::detail {
 
@@ -33,7 +33,7 @@ namespace erock::detail {
      * Extract functions section
      */
     inline 
-    void extract(rapidjson::Value& doc, raw_bool_t& val){
+    void extract(rapidjson::Value& doc, raw_bool_t& val) {
         val = doc.GetBool();
     }
 
@@ -57,6 +57,7 @@ namespace erock::detail {
         for(auto&& it : doc.GetArray()) {
             auto&& obj = it;
             TValue cur_value;
+            assert_type_valid<TValue>(it, "An element of the Array");
             extract(it, cur_value);
             values.emplace_back(std::move(cur_value));
         }
@@ -67,15 +68,22 @@ namespace erock::detail {
         auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
         tuple.for_each([&](auto&& field){
             using field_t = std::decay_t<decltype(field)>;
+            using value_t = std::decay_t<decltype(field.value)>;
             static_assert(is_object_v<field_t>, 
                 "EROCK-JSON::load_object: All the types of the user defined structure"
                 "must be wrapped with erock::object structure.\n"
                 "It is required 'cause this is only one way how to tell the library what name the object has to has"
             );
-            extract(doc[field.name.data()], field.value);
+            auto&& json_value = doc[field.name.data()];
+            assert_object_not_null(json_value, field.name);
+            assert_type_valid<value_t>(json_value, field.name);
+            extract(json_value, field.value);
         });
     }
 
+    /**
+     * @brief Tries to store all the parsed values from json DOM three to the given structure
+     */ 
     template<typename TValue>
     void load(rapidjson::Document& doc, TValue& val){
         static_assert(!is_object_v<TValue>, 
