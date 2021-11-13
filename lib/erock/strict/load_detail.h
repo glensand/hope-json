@@ -57,13 +57,13 @@ namespace erock::detail {
             validate_obj(&rapidjson::Value::IsObject, "Object");
         }
         if constexpr (is_inbuilt_v<TValue>){
-            hope::type_value_map map(
+            const hope::type_value_map map(
                 hope::tv<raw_string_t>(std::make_pair(&rapidjson::Value::IsString, "String")),
                 hope::tv<raw_int_t>(std::make_pair(&rapidjson::Value::IsInt, "Int")),
                 hope::tv<raw_bool_t>(std::make_pair(&rapidjson::Value::IsBool, "Bool")),
                 hope::tv<raw_real_t>(std::make_pair(&rapidjson::Value::IsDouble, "Real"))
             );
-            validate_obj(map.get<TValue>().first, map.get<TValue>().second);
+            validate_obj(map.template get<TValue>().first, map.template get<TValue>().second);
         }
     }
 
