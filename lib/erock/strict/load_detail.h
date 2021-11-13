@@ -16,7 +16,6 @@
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
-#include "hope/components/typemap.h"
 #include <stdexcept>
 #include <string>
 
@@ -38,39 +37,34 @@ namespace erock::detail {
     }
 
     template<typename TValue>
+    constexpr static bool is_inbuilt_v = hope::contains<TValue>(registered_raw_types_t{});
+
+    template<typename TValue>
     void assert_type_valid(rapidjson::Value& obj, std::string_view name) {
         // assert the object is object or array(in terms of json)
-        if constexpr (hope::is_vector_v<TValue>){
-            if(!obj.IsArray()){
+        auto&& validate_obj = [&](auto method, const auto* type){
+            if(!(obj.*method)()){
                 throw std::runtime_error(
                     extract_exception_with_name(name) + 
-                    "has not appropriate type, expected type is Array"
+                    "has not appropriate type, expected type is [" + type + "]"
                 );
             }
+        }; // array and object needs sprecial care
+        if constexpr (hope::is_vector_v<TValue>){
+            validate_obj(&rapidjson::Value::IsArray, "Array");
         }
         if constexpr (is_object_v<TValue>) {
-            if(!obj.IsObject()){
-                throw std::runtime_error(
-                    extract_exception_with_name(name) + 
-                    "has not appropriate type, expected type is Object"
-                );
-            }
+            validate_obj(&rapidjson::Value::IsObject, "Object");
         }
-    }
-
-    template<>
-    void assert_type_valid<raw_bool_t>(rapidjson::Value& obj, std::string_view name){
-        if(!obj.IsBool()){
-            throw std::runtime_error(
-                extract_exception_with_name(name) +
-                "has no appropriate type, expected type is Bool"
+        if constexpr (is_inbuilt_v<TValue>){
+            hope::type_value_map map(
+                hope::tv<raw_string_t>(std::make_pair(&rapidjson::Value::IsString, "String")),
+                hope::tv<raw_int_t>(std::make_pair(&rapidjson::Value::IsInt, "Int")),
+                hope::tv<raw_bool_t>(std::make_pair(&rapidjson::Value::IsBool, "Bool")),
+                hope::tv<raw_real_t>(std::make_pair(&rapidjson::Value::IsDouble, "Real"))
             );
+            validate_obj(map.get<TValue>().first, map.get<TValue>().second);
         }
-    }
-
-    template<>
-    void assert_type_valid<raw_int_t>(rapidjson::Value& obj, std::string_view name){
-
     }
 
 }

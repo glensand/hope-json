@@ -18,6 +18,7 @@
 #pragma once
 
 #include "erock/strict/object.h"
+#include "hope/typelist/type_list.h"
 #include <cmath>
 #include <string>
 #include <vector>
@@ -45,6 +46,10 @@ namespace erock {
      * as simple as possible (idology of the library)
      */ 
     using raw_string_t = std::string;
+
+    /**
+     */ 
+    using registered_raw_types_t = hope::type_list<raw_int_t, raw_real_t, raw_bool_t, raw_string_t>;
 
     /**
      * Alias to erock array template class (uses standard vector 'cause it is quete simple)

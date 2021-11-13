@@ -16,6 +16,7 @@
 
 #include <string_view>
 #include "hope/tuple/tuple_from_struct.h"
+#include "hope/typelist/type_value_map.h"
 #include "erock/strict/types.h"
 #include "erock/strict/type_traits.h"
 #include "erock/strict/object_traits.h"
@@ -23,48 +24,25 @@
 
 namespace erock::detail {
 
-    /**
-     * Declaration section
-     */ 
     template<typename TValue>
-    void extract(rapidjson::Value& doc, TValue& val);
-
-    /**
-     * Extract functions section
-     */
-    inline 
-    void extract(rapidjson::Value& doc, raw_bool_t& val) {
-        val = doc.GetBool();
+    std::enable_if_t<is_inbuilt_v<TValue>> 
+    extract(rapidjson::Value& doc, TValue& val) {
+        hope::type_value_map map(
+            hope::tv<raw_string_t>(&rapidjson::Value::GetString),
+            hope::tv<raw_int_t>(&rapidjson::Value::GetInt),
+            hope::tv<raw_bool_t>(&rapidjson::Value::GetBool),
+            hope::tv<raw_real_t>(&rapidjson::Value::GetDouble)
+        );
+        auto&& method = map.get<TValue>();
+        val = (doc.*method)();
     }
 
-    inline
-    void extract(rapidjson::Value& doc, raw_int_t& val){
-        val = doc.GetInt();
-    }
-
-    inline
-    void extract(rapidjson::Value& doc, raw_real_t& val){
-        val = doc.GetDouble();
-    }
-
-    inline
-    void extract(rapidjson::Value& doc, raw_string_t& val){
-        val = doc.GetString();
-    }
+    template<typename TValue> // predefined 'cause it is used in the method below
+    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values);
 
     template<typename TValue>
-    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values){
-        for(auto&& it : doc.GetArray()) {
-            auto&& obj = it;
-            TValue cur_value;
-            assert_type_valid<TValue>(it, "An element of the Array");
-            extract(it, cur_value);
-            values.emplace_back(std::move(cur_value));
-        }
-    } 
-
-    template<typename TValue>
-    void extract(rapidjson::Value& doc, TValue& val){
+    std::enable_if_t<!is_inbuilt_v<TValue>>
+    extract(rapidjson::Value& doc, TValue& val){
         auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
         tuple.for_each([&](auto&& field){
             using field_t = std::decay_t<decltype(field)>;
@@ -80,6 +58,17 @@ namespace erock::detail {
             extract(json_value, field.value);
         });
     }
+
+    template<typename TValue>
+    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values){
+        for(auto&& it : doc.GetArray()) {
+            auto&& obj = it;
+            TValue cur_value;
+            assert_type_valid<TValue>(it, "An element of the Array");
+            extract(it, cur_value);
+            values.emplace_back(std::move(cur_value));
+        }
+    } 
 
     /**
      * @brief Tries to store all the parsed values from json DOM three to the given structure
