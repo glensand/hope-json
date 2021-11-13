@@ -49,7 +49,7 @@ namespace erock::detail {
                     "has not appropriate type, expected type is [" + type + "]"
                 );
             }
-        }; // array and object needs sprecial care
+        }; // array and object needs special care
         if constexpr (hope::is_vector_v<TValue>){
             validate_obj(&rapidjson::Value::IsArray, "Array");
         }

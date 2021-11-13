@@ -33,7 +33,7 @@ namespace erock::detail {
             hope::tv<raw_bool_t>(&rapidjson::Value::GetBool),
             hope::tv<raw_real_t>(&rapidjson::Value::GetDouble)
         );
-        auto&& method = map.get<TValue>();
+        auto&& method = map.template get<TValue>();
         val = (doc.*method)();
     }
 
