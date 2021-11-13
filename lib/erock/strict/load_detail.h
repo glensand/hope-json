@@ -58,10 +58,10 @@ namespace erock::detail {
         }
         if constexpr (is_inbuilt_v<TValue>){
             const hope::type_value_map map(
-                hope::tv<raw_string_t>(std::make_pair(&rapidjson::Value::IsString, "String")),
-                hope::tv<raw_int_t>(std::make_pair(&rapidjson::Value::IsInt, "Int")),
-                hope::tv<raw_bool_t>(std::make_pair(&rapidjson::Value::IsBool, "Bool")),
-                hope::tv<raw_real_t>(std::make_pair(&rapidjson::Value::IsDouble, "Real"))
+                hope::tv<raw_string_t>(std::pair(&rapidjson::Value::IsString, "String")),
+                hope::tv<raw_int_t>(std::pair(&rapidjson::Value::IsInt, "Int")),
+                hope::tv<raw_bool_t>(std::pair(&rapidjson::Value::IsBool, "Bool")),
+                hope::tv<raw_real_t>(std::pair(&rapidjson::Value::IsDouble, "Real"))
             );
             validate_obj(map.template get<TValue>().first, map.template get<TValue>().second);
         }
