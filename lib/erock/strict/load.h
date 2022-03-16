@@ -48,7 +48,7 @@ namespace erock::detail {
             using field_t = std::decay_t<decltype(field)>;
             using value_t = std::decay_t<decltype(field.value)>;
             static_assert(is_object_v<field_t>, 
-                "EROCK-JSON::load_object: All the types of the user defined structure"
+                "EROCK-JSON::extract: All the types of the user defined structure"
                 "must be wrapped with erock::object structure.\n"
                 "It is required 'cause this is only one way how to tell the library what name the object has to has"
             );

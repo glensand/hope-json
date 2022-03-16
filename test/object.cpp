@@ -114,3 +114,10 @@ TEST(Initial, struct_with_simple_array){
     auto&& vec = doc.v0.value;
     ASSERT_TRUE(vec.size() == 7);
 }
+
+TEST(Store, struct_with_simple_array){
+    using doc_t = struct_with_struct_array;
+    auto&& doc = erock::load<struct_with_simple_array>(simple_array_json);
+    auto&& loaded_result = erock::store(doc);
+    auto&& loaded_doc = erock::load<struct_with_simple_array>(loaded_result);
+}

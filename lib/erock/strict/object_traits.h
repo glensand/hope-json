@@ -25,7 +25,6 @@ namespace erock  {
     template <class TValue>
     struct is_object<object<TValue>> final : std::true_type {};
 
-
     /**
      * Checks if the specified type is object in terms of the erock library. 
      * NOTE: Only erock objects might be processed by load/store operations 
@@ -33,7 +32,7 @@ namespace erock  {
      */
     template<typename TValue>
     constexpr bool is_object_v = is_object<TValue>::value;
-
+    
 }
 
 /*! @} */

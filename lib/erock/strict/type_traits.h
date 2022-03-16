@@ -18,17 +18,11 @@
 #pragma once
 
 #include "erock/strict/types.h"
-#include "hope/components/user_defined_types.h"
 
 namespace erock {
 
-    template<typename TValue, typename TClearValue = std::decay_t<TValue>>
-    constexpr bool is_inbuilt_v = 
-        std::is_same_v<TClearValue, raw_bool_t> || 
-        std::is_same_v<TClearValue, raw_int_t> ||
-        std::is_same_v<TClearValue, raw_string_t> ||
-        std::is_same_v<TClearValue, raw_real_t> ||
-        hope::is_vector_v<TClearValue>;
+    template<typename TValue>
+    constexpr bool is_inbuilt_v = hope::contains<TValue>(registered_raw_types_t{});
 
 }
 

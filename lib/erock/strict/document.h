@@ -14,6 +14,9 @@
 
 #pragma once
 
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+
 #include "erock/strict/load.h"
 #include "erock/strict/store.h"
 #include "erock/strict/document_detail.h"
@@ -45,10 +48,25 @@ namespace erock {
 
     /**
      * \brief Converts given structure to the JSON DOM tree, then stores it to the string
+     * @param value Object to be stored to the json
+     * 
+     * @return valid JSON string (result string is the reflection of the given object)
+     * \throws std::runctime error if the object is not valid
      */ 
     template<typename TValue>
     auto store(const TValue& value) {
+
+        static_assert(!is_inbuilt_v<TValue>, 
+            "---- EROCK ASSERTION FAILURE ----; An attempt was made to store object of inappropriate type"
+        );
+
         rapidjson::Document doc;
+        doc.SetObject();
+        detail::store(value, doc);
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        doc.Accept(writer);
+        return std::string { /* writer.GetString(); */ };
     }
 }
 

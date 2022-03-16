@@ -16,6 +16,7 @@
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
+#include "hope/components/user_defined_types.h"
 #include <stdexcept>
 #include <string>
 
@@ -35,9 +36,6 @@ namespace erock::detail {
             );
         }
     }
-
-    template<typename TValue>
-    constexpr static bool is_inbuilt_v = hope::contains<TValue>(registered_raw_types_t{});
 
     template<typename TValue>
     void assert_type_valid(rapidjson::Value& obj, std::string_view name) {
