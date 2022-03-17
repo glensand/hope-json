@@ -63,7 +63,7 @@ namespace erock::detail {
         object.SetArray();
         for(auto&& obj : value) {
             rapidjson::Value element;
-            //store(obj, element, allocator);
+            store(obj, element, allocator);
             object.PushBack(element.Move(), allocator); 
         }
     }

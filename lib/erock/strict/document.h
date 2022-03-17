@@ -66,7 +66,7 @@ namespace erock {
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
         doc.Accept(writer);
-        return std::string { /* writer.GetString(); */ };
+        return std::string { buffer.GetString() };
     }
 }
 
