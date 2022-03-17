@@ -2,13 +2,14 @@
 #include <fstream>
 
 #include "erock/strict/document.h"
+#include "erock/strict/types_macro.h"
 #include "hope/tuple/print_tuple.h"
 #include "hope/tuple/tuple_policy.h"
 
 struct simple_struct{
-    erock::int_t v1{"field1"};
-    erock::bool_t v2{"field2"};
-    erock::real_t v3{"field3"};
+    JINT(field1);
+    JBOOL(field2);
+    JREAL(field3);
 };
 
 int main(){
