@@ -61,7 +61,6 @@ namespace erock {
         );
 
         rapidjson::Document doc;
-        doc.SetObject();
         detail::store(value, doc);
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);

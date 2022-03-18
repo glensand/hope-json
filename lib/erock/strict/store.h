@@ -18,6 +18,7 @@
 #include <type_traits>
 
 #include "rapidjson/document.h"
+#include "hope/typelist/type_value_map.h"
 #include "hope/tuple/tuple_from_struct.h"
 
 namespace erock::detail {
@@ -28,7 +29,17 @@ namespace erock::detail {
     template<typename TValue>
     std::enable_if_t<is_inbuilt_v<TValue>>
     store(const TValue& value, rapidjson::Value& object, rapidjson::Document::AllocatorType& allocator) {
-        object = value;
+        if constexpr (std::is_same_v<TValue, std::string>) {
+            object.SetString(value.c_str(), value.size());
+        } else if constexpr(!std::is_same_v<TValue, std::string>){ // msvc needed special care
+            hope::type_value_map map(
+                hope::tv<raw_int_t>(&rapidjson::Value::SetInt),
+                hope::tv<raw_bool_t>(&rapidjson::Value::SetBool),
+                hope::tv<raw_real_t>(&rapidjson::Value::SetDouble)
+            );
+            auto&& method = map.template get<TValue>();
+            (object.*method)(value);
+        }
     }
 
     template<typename TValue>
@@ -40,6 +51,7 @@ namespace erock::detail {
     template<typename TValue>
     std::enable_if_t<!is_inbuilt_v<TValue>>
     store(const TValue& value, rapidjson::Value& object, rapidjson::Document::AllocatorType& allocator) {
+        object.SetObject();
         auto&& tuple = hope::tuple_from_struct(value, hope::field_policy::reference{});
         tuple.for_each([&](auto&& child){
             using child_t = std::decay_t<decltype(child)>;

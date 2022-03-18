@@ -6,10 +6,16 @@
 #include "hope/tuple/print_tuple.h"
 #include "hope/tuple/tuple_policy.h"
 
-struct simple_struct{
+struct simple_struct final {
     JINT(field1);
     JBOOL(field2);
     JREAL(field3);
+};
+
+struct struct_with_struct final {
+    JOBJECT(struct_field, simple_struct);
+    JREAL(field2);
+    JSTRING(field3);
 };
 
 int main(){
@@ -33,5 +39,11 @@ int main(){
         std::cout << ex.what();
     }
 
+    struct_with_struct s;
+    s.field3 = "new string";
+    s.field2 = 11.0;
+    s.struct_field.value.field1 = 38;
+    auto&& json_serialized = erock::store(s);
+    std::cout << json_serialized << std::endl;
     return 0;
 }
