@@ -17,12 +17,12 @@
 #include <string_view>
 #include "hope/tuple/tuple_from_struct.h"
 #include "hope/typelist/type_value_map.h"
+#include "erock/object_traits.h"
 #include "erock/strict/types.h"
 #include "erock/strict/type_traits.h"
-#include "erock/strict/object_traits.h"
 #include "erock/strict/load_detail.h"
 
-namespace erock::detail {
+namespace erock::strict::detail {
 
     template<typename TValue>
     std::enable_if_t<is_inbuilt_v<TValue>> 

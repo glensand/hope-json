@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 - 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2022 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -6,16 +6,16 @@
  * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-rock-json
  */
 
-/*! \defgroup <strict> Strict
+/*! \defgroup <core> Core
     @{
     \file
-    \brief File contains definitions of the strict json object
+    \brief File contains traits for JSON object types
 */
 
 #pragma once
 
 #include <type_traits>
-#include "erock/strict/object.h"
+#include "erock/base_object.h"
 
 namespace erock  {
 
@@ -23,7 +23,7 @@ namespace erock  {
     struct is_object final : std::false_type {};
 
     template <class TValue>
-    struct is_object<object<TValue>> final : std::true_type {};
+    struct is_object<base_object<TValue>> final : std::true_type {};
 
     /**
      * Checks if the specified type is object in terms of the erock library. 

@@ -15,43 +15,12 @@
 #pragma once
 
 #include <string_view>
+#include "erock/base_object.h"
 
-namespace erock  {
+namespace erock::strict {
 
-    /**
-     * \brief Named field of the JSON's object, the field is also complete object, 'cause object = object | Term
-     * This structure should be used to each member of user's type.
-     * 
-     *  @param TValue Internal value type (e_int_t, e_bool_t or user structure e.t.c)
-     */
     template<typename TValue>
-    struct object final {
-        /**
-         * The name of the object(or attribute in terms of xml)
-         */ 
-        const std::string_view name;
-
-        /**
-         * The value of the object
-         */
-        TValue value;
-
-        /**
-         * Implicit conversion operator
-         */
-        operator const TValue&() const {
-            return value;
-        }
-
-        operator TValue&() {
-            return value;
-        }
-        
-        object& operator=(const TValue& v){
-            value = v;
-            return *this;
-        }
-    };
+    using object = base_object<TValue>;
 
 }
 

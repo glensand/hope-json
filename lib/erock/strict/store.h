@@ -21,7 +21,7 @@
 #include "hope/typelist/type_value_map.h"
 #include "hope/tuple/tuple_from_struct.h"
 
-namespace erock::detail {
+namespace erock::strict::detail {
 
     /*
     * Stores trivial values into specified object

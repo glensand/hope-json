@@ -7,15 +7,15 @@
 #include "hope/tuple/tuple_policy.h"
 
 struct simple_struct final {
-    JINT(field1);
-    JBOOL(field2);
-    JREAL(field3);
+    SJINT(field1);
+    SJBOOL(field2);
+    SJREAL(field3);
 };
 
 struct struct_with_struct final {
-    JOBJECT(struct_field, simple_struct);
-    JREAL(field2);
-    JSTRING(field3);
+    SJOBJECT(struct_field, simple_struct);
+    SJREAL(field2);
+    SJSTRING(field3);
 };
 
 int main(){
@@ -27,7 +27,7 @@ int main(){
         "}";
     
     try {
-        auto&& doc = erock::load<simple_struct>(json);
+        auto&& doc = erock::strict::load<simple_struct>(json);
 
         std::cout << "Parsed" << std::endl;
         auto&& tuple = tuple_from_struct(doc, hope::field_policy::reference{});
@@ -43,7 +43,7 @@ int main(){
     s.field3 = "new string";
     s.field2 = 11.0;
     s.struct_field.value.field1 = 38;
-    auto&& json_serialized = erock::store(s);
+    auto&& json_serialized = erock::strict::store(s);
     std::cout << json_serialized << std::endl;
     return 0;
 }

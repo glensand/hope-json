@@ -19,7 +19,7 @@
 
 #include "erock/strict/types.h"
 
-namespace erock {
+namespace erock::strict {
 
     template<typename TValue>
     constexpr bool is_inbuilt_v = hope::contains<TValue>(registered_raw_types_t{});

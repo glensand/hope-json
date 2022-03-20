@@ -6,7 +6,7 @@
  * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-rock-json
  */
 
-/*! \defgroup <strict> Strict
+/*! \defgroup <core> Core
     @{
     \file
     \brief File contains utility functions for load operations
@@ -16,7 +16,6 @@
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
-#include "hope/components/typemap.h"
 #include <stdexcept>
 #include <string>
 

@@ -19,12 +19,12 @@
 
 #include "erock/strict/load.h"
 #include "erock/strict/store.h"
-#include "erock/strict/document_detail.h"
+#include "erock/error_info.h"
 
 #include <stdexcept>
 #include <string_view>
 
-namespace erock {
+namespace erock::strict {
 
     /**
      * \brief Tries to parse JSON string, if succeeded then stores all the loaded values to the related 
@@ -40,7 +40,7 @@ namespace erock {
     template<typename TValue>
     auto load(std::string_view json) {
         rapidjson::Document doc;
-        detail::assert_load_valid(doc.Parse(json.data()));
+        erock::detail::assert_load_valid(doc.Parse(json.data()));
         TValue object;
         detail::load(doc, object);
         return object;

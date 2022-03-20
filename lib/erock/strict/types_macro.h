@@ -16,12 +16,12 @@
 
 #include "erock/strict/types.h"
 
-#define JINT(Name) erock::int_t Name{ #Name }
-#define JREAL(Name) erock::real_t Name{ #Name } 
-#define JBOOL(Name) erock::bool_t Name{ #Name }
-#define JSTRING(Name) erock::string_t Name{ #Name }
+#define SJINT(Name) erock::strict::int_t Name{ #Name }
+#define SJREAL(Name) erock::strict::real_t Name{ #Name } 
+#define SJBOOL(Name) erock::strict::bool_t Name{ #Name }
+#define SJSTRING(Name) erock::strict::string_t Name{ #Name }
 
-#define JARRAY(Name, INNER_TYPE) erock::array_t<INNER_TYPE> Name{ #Name }
-#define JOBJECT(Name, INNER_TYPE) erock::object<INNER_TYPE> Name{ #Name }
+#define SJARRAY(Name, INNER_TYPE) erock::strict::array_t<INNER_TYPE> Name{ #Name }
+#define SJOBJECT(Name, INNER_TYPE) erock::strict::object<INNER_TYPE> Name{ #Name }
 
 /*! @} */

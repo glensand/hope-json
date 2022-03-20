@@ -17,10 +17,11 @@
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "hope/components/user_defined_types.h"
+#include "erock/strict/type_traits.h"
 #include <stdexcept>
 #include <string>
 
-namespace erock::detail {
+namespace erock::strict::detail {
 
     inline
     std::string extract_exception_with_name(std::string_view name){
