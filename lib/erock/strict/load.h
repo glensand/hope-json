@@ -15,8 +15,11 @@
 #pragma once
 
 #include <string_view>
+
 #include "hope/tuple/tuple_from_struct.h"
 #include "hope/typelist/type_value_map.h"
+#include "hope/components/typemap.h"
+
 #include "erock/object_traits.h"
 #include "erock/strict/types.h"
 #include "erock/strict/type_traits.h"
@@ -24,48 +27,46 @@
 
 namespace erock::strict::detail {
 
-    template<typename TValue>
-    std::enable_if_t<is_inbuilt_v<TValue>> 
-    extract(rapidjson::Value& doc, TValue& val) {
-        hope::type_value_map map(
-            hope::tv<raw_string_t>(&rapidjson::Value::GetString),
-            hope::tv<raw_int_t>(&rapidjson::Value::GetInt),
-            hope::tv<raw_bool_t>(&rapidjson::Value::GetBool),
-            hope::tv<raw_real_t>(&rapidjson::Value::GetDouble)
-        );
-        auto&& method = map.template get<TValue>();
-        val = (doc.*method)();
+    struct set_policy final{};
+    struct present_policy final{};
+    struct inbuild_policy final{};
+
+    template<typename Policy, typename... Ts>
+    using get_t = typename hope::type_map<Ts...>::template get_t<Policy>;
+
+    template<typename TValue, typename... Ts>
+    void extract(rapidjson::Value& json, TValue& val, hope::type_map<Ts...>){
+        using inbuild_checker_t = get_t<inbuild_policy, Ts...>;
+        if constexpr (inbuild_checker_t{}.template operator()<TValue>()) {
+            // create setter using given set policy
+            using setter_t = get_t<set_policy, Ts...>;
+            setter_t{}(val, json);
+        } else if constexpr (!inbuild_checker_t{}.template operator()<TValue>()) {
+            auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
+            tuple.for_each([&](auto&& field){
+                using field_t = std::decay_t<decltype(field)>;
+                using value_t = std::decay_t<decltype(field.value)>;
+                static_assert(is_object_v<field_t>, 
+                    "EROCK-JSON::extract: All the types of the user defined structure"
+                    "must be wrapped with erock::object structure.\n"
+                    "It is required 'cause this is only one way how to tell the library what name the object has to has"
+                );
+
+                auto&& json_value = json[field.name.data()];
+                if(get_t<present_policy, Ts...>().template operator()<value_t>(json_value, field.name)) {
+                    extract(json_value, field.value, hope::type_map<Ts...>{});
+                }
+            });
+        }
     }
 
-    template<typename TValue> // predefined 'cause it is used in the method below
-    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values);
-
-    template<typename TValue>
-    std::enable_if_t<!is_inbuilt_v<TValue>>
-    extract(rapidjson::Value& doc, TValue& val){
-        auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
-        tuple.for_each([&](auto&& field){
-            using field_t = std::decay_t<decltype(field)>;
-            using value_t = std::decay_t<decltype(field.value)>;
-            static_assert(is_object_v<field_t>, 
-                "EROCK-JSON::extract: All the types of the user defined structure"
-                "must be wrapped with erock::object structure.\n"
-                "It is required 'cause this is only one way how to tell the library what name the object has to has"
-            );
-            auto&& json_value = doc[field.name.data()];
-            assert_object_not_null(json_value, field.name);
-            assert_type_valid<value_t>(json_value, field.name);
-            extract(json_value, field.value);
-        });
-    }
-
-    template<typename TValue>
-    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values){
+    template<typename TValue, typename... Ts> 
+    void extract(rapidjson::Value& doc, raw_array_t<TValue>& values, hope::type_map<Ts...>){
         for(auto&& it : doc.GetArray()) {
             auto&& obj = it;
             TValue cur_value;
             assert_type_valid<TValue>(it, "An element of the Array");
-            extract(it, cur_value);
+            extract(it, cur_value, hope::type_map<Ts...>{});
             values.emplace_back(std::move(cur_value));
         }
     } 
@@ -73,13 +74,13 @@ namespace erock::strict::detail {
     /**
      * @brief Tries to store all the parsed values from json DOM three to the given structure
      */ 
-    template<typename TValue>
-    void load(rapidjson::Document& doc, TValue& val){
+    template<typename TValue, typename... Ts>
+    void load(rapidjson::Document& doc, TValue& val, hope::type_map<Ts...>){
         static_assert(!is_object_v<TValue>, 
             "EROCK-JSON::load: erock::object type should not be used as wrapper as json document\n"
             "Remove the wrapper or pass value field and try compile again"
         );
-        extract(doc, val);
+        extract(doc, val, hope::type_map<Ts...>{});
     }
 
 }
