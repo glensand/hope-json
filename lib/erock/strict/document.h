@@ -17,57 +17,14 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-#include "erock/strict/load.h"
-#include "erock/strict/store.h"
+#include "erock/load.h"
+#include "erock/store.h"
 #include "erock/error_info.h"
 
 #include <stdexcept>
 #include <string_view>
 
 namespace erock::strict {
-
-    /**
-     * \brief Value set policy, is used for transparent value providing
-     * 
-     * */
-    struct setter final {
-        template<typename TReceiver>
-        void operator()(TReceiver&& receiver, rapidjson::Value& json) const {
-                    // prepare specific extractors, to avoid boilerplate
-            hope::type_value_map map(
-                hope::tv<raw_string_t>(&rapidjson::Value::GetString),
-                hope::tv<raw_int_t>(&rapidjson::Value::GetInt),
-                hope::tv<raw_bool_t>(&rapidjson::Value::GetBool),
-                hope::tv<raw_real_t>(&rapidjson::Value::GetDouble)
-            );
-            auto&& method = map.template get<std::decay_t<TReceiver>>();
-            receiver = (json.*method)(); 
-        }
-    };
-
-    /**
-     * \brief Policy is used to check if a value exists
-     * 
-     * */
-    struct presenter final {
-        template<typename TExpected>
-        bool operator()(rapidjson::Value& value, std::string_view name) const { 
-            detail::assert_object_not_null(value, name);
-            detail::assert_type_valid<TExpected>(value, name);
-            return true; 
-        }
-    };
-    
-    /**
-     * \brief Policy is used to check if a value is trivial
-     * 
-     * */
-    struct inbuild_checker final {
-        template<typename TValue>
-        constexpr bool operator()() const { 
-            return is_inbuilt_v<TValue>;
-        }
-    };
 
     /**
      * \brief Tries to parse JSON string, if succeeded then stores all the loaded values to the related 
@@ -83,14 +40,19 @@ namespace erock::strict {
     template<typename TValue>
     auto load(std::string_view json) {
         rapidjson::Document doc;
-        erock::detail::assert_load_valid(doc.Parse(json.data()));
+        assert_load_valid(doc.Parse(json.data()));
         TValue object;
-        using policy_map_t = hope::type_map<
-            hope::type_pair<detail::set_policy, setter>,
-            hope::type_pair<detail::present_policy, presenter>,
-            hope::type_pair<detail::inbuild_policy, inbuild_checker>
-        >;
-        detail::load(doc, object, policy_map_t{});
+        loader(
+            object,
+            hope::type_map<
+                hope::type_pair<loader_policy::set, setter>,
+                hope::type_pair<loader_policy::present, presenter>,
+                hope::type_pair<loader_policy::inbuild, inbuild_checker>,
+                hope::type_pair<loader_policy::value, value_trait>
+            >{}
+        )
+        .execute(doc);
+
         return object;
     }
 
