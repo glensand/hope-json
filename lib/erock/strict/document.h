@@ -42,13 +42,11 @@ namespace erock::strict {
         rapidjson::Document doc;
         assert_load_valid(doc.Parse(json.data()));
         TValue object;
-        loader(
+        load_op(
             object,
             hope::type_map<
-                hope::type_pair<loader_policy::set, setter>,
-                hope::type_pair<loader_policy::present, presenter>,
-                hope::type_pair<loader_policy::inbuild, inbuild_checker>,
-                hope::type_pair<loader_policy::value, value_trait>
+                hope::type_pair<load_policy::present, presenter>,
+                hope::type_pair<load_policy::value, value_trait>
             >{}
         )
         .execute(doc);
@@ -65,13 +63,19 @@ namespace erock::strict {
      */ 
     template<typename TValue>
     auto store(const TValue& value) {
-
         static_assert(!is_inbuilt_v<TValue>, 
             "---- EROCK ASSERTION FAILURE ----; An attempt was made to store object of inappropriate type"
         );
 
         rapidjson::Document doc;
-        detail::store(value, doc);
+        store_op(
+            value,
+            hope::type_map<
+                hope::type_pair<store_policy::value, value_trait>
+            >{}
+        )
+        .execute(doc);
+
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
         doc.Accept(writer);

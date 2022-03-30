@@ -20,6 +20,7 @@
 #include "hope/typelist/type_value_map.h"
 #include "hope/components/typemap.h"
 
+#include "erock/operation.h"
 #include "erock/object_traits.h"
 #include "erock/error_info.h"
 #include "erock/strict/types.h"
@@ -27,22 +28,20 @@
 
 namespace erock {
 
-    struct loader_policy final {
-        struct set final{ };
-        struct present final{ };
-        struct inbuild final{ };
-        struct value final{ };
+    struct load_policy final {
+        struct present final { };
+        struct value final { };
     };
         
     template<typename TClass, typename... Ts>
-    class loader final{
+    class load_op final : public operation<Ts...>{
     public:
-        static_assert(!is_object_v<TClass>  , 
+        static_assert(!is_object_v<TClass>, 
             "EROCK-JSON::load: erock::object type should not be used as wrapper as json document\n"
             "Remove the wrapper or pass value field and try compile again"
         );
 
-        loader(TClass& val, hope::type_map<Ts...>) 
+        load_op(TClass& val, hope::type_map<Ts...>) 
             : m_value(val){
 
         }
@@ -52,20 +51,28 @@ namespace erock {
         }
 
     private:
-        using map_t = hope::type_map<Ts...>;
-        using policy = loader_policy;
+        using super = operation<Ts...>;
+        using policy = load_policy;
 
-        template<typename Policy>
-        using get_t = typename map_t::template get_t<Policy>;
+        constexpr auto getter_map() const {
+            return hope::type_value_map(
+                hope::tv<raw_string_t>(&rapidjson::Value::GetString),
+                hope::tv<raw_int_t>(&rapidjson::Value::GetInt),
+                hope::tv<raw_bool_t>(&rapidjson::Value::GetBool),
+                hope::tv<raw_real_t>(&rapidjson::Value::GetDouble)
+            );
+        }
 
         template<typename TValue>
         void extract(rapidjson::Value& json, TValue& val){
-            using inbuild_checker_t = get_t<policy::inbuild>;
-            if constexpr (inbuild_checker_t{}.template operator()<TValue>()) {
-                // create setter using given set policy
-                using setter_t = get_t<policy::set>;
-                setter_t{}(val, json);
-            } else if constexpr (!inbuild_checker_t{}.template operator()<TValue>()) {
+            using value_policy_t = typename super::template get_t<policy::value>;
+            using raw_value_t = typename value_policy_t::template raw_value_t<TValue>;
+            if constexpr (is_inbuilt_v<raw_value_t>) {
+                auto&& map = getter_map();
+                auto&& method = map.template get<raw_value_t>();
+                auto&& inner_value = value_policy_t::value(val);
+                inner_value = (json.*method)();
+            } else if constexpr (!is_inbuilt_v<raw_value_t>) {
                 auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
                 tuple.for_each([&](auto&& field){
                     using field_t = std::decay_t<decltype(field)>;
@@ -77,7 +84,8 @@ namespace erock {
                     );
 
                     auto&& json_value = json[field.name.data()];
-                    if(get_t<policy::present>().template operator()<value_t>(json_value, field.name)) {
+                    using present_t = typename super::template get_t<policy::present>;
+                    if(present_t::template is<value_t>(json_value, field.name)) {
                         extract(json_value, field.value);
                     }
                 });
@@ -88,7 +96,7 @@ namespace erock {
         void extract(rapidjson::Value& json, raw_array_t<TValue>& values) {
             for(auto&& it : json.GetArray()) {
                 TValue cur_value;
-                using value_t = typename get_t<policy::value>::template raw_value_t<TValue>;
+                using value_t = typename super::template get_t<policy::value>::template raw_value_t<TValue>;
                 assert_type_valid<value_t>(it, "An element of the Array");
                 extract(it, cur_value);
                 values.emplace_back(std::move(cur_value));
@@ -99,7 +107,8 @@ namespace erock {
     };
 
     template<typename TClass, typename... Ts>
-    loader(TClass, hope::type_map<Ts...>)->loader<TClass, Ts...>;
+    load_op(TClass, hope::type_map<Ts...>)->load_op<TClass, Ts...>;
+
 }
 
 /*! @} */

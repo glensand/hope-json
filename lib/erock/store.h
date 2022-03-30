@@ -18,75 +18,89 @@
 #include <type_traits>
 
 #include "rapidjson/document.h"
+
+#include "erock/operation.h"
 #include "hope/typelist/type_value_map.h"
 #include "hope/tuple/tuple_from_struct.h"
 
-namespace erock::strict::detail {
+namespace erock {
 
-    /*
-    * Stores trivial values into specified object
-    */
-    template<typename TValue>
-    std::enable_if_t<is_inbuilt_v<TValue>>
-    store(const TValue& value, rapidjson::Value& object, rapidjson::Document::AllocatorType& allocator) {
-        if constexpr (std::is_same_v<TValue, std::string>) {
-            object.SetString(value.c_str(), value.size());
-        } else if constexpr(!std::is_same_v<TValue, std::string>){ // msvc needed special care
-            hope::type_value_map map(
-                hope::tv<raw_int_t>(&rapidjson::Value::SetInt),
-                hope::tv<raw_bool_t>(&rapidjson::Value::SetBool),
-                hope::tv<raw_real_t>(&rapidjson::Value::SetDouble)
-            );
-            auto&& method = map.template get<TValue>();
-            (object.*method)(value);
+    struct store_policy final {
+        struct value final { };
+    };
+
+    template<typename TClass, typename... Ts>
+    class store_op final : public operation<Ts...>{
+    public:
+        store_op(const TClass& value, hope::type_map<Ts...>) 
+            : m_value(value) {
+
         }
-    }
 
-    template<typename TValue>
-    void store(const raw_array_t<TValue>& value, rapidjson::Value& object, rapidjson::Document::AllocatorType& allocator);
-
-    /**
-     * \brief Stores object of defined type to the given json-object
-     */ 
-    template<typename TValue>
-    std::enable_if_t<!is_inbuilt_v<TValue>>
-    store(const TValue& value, rapidjson::Value& object, rapidjson::Document::AllocatorType& allocator) {
-        object.SetObject();
-        auto&& tuple = hope::tuple_from_struct(value, hope::field_policy::reference{});
-        tuple.for_each([&](auto&& child){
-            using child_t = std::decay_t<decltype(child)>;
-            static_assert(is_object_v<child_t>, 
-                "EROCK-JSON::store: All the types of the user defined structure"
-                "must be wrapped with erock::object structure.\n"
-                "It is required 'cause this is only one way how to tell the library what name the object has to has"
-            );
-            rapidjson::Value json_child;
-            store(child.value, json_child, allocator);
-            rapidjson::GenericStringRef<char> rapid_name{ child.name.data() };
-            object.AddMember(rapid_name, json_child.Move(), allocator);
-        });
-    }
-
-    /*
-    * Stores array into specified object
-    */
-    template<typename TValue>
-    void store(const raw_array_t<TValue>& value, rapidjson::Value& object, rapidjson::Document::AllocatorType& allocator) {
-        object.SetArray();
-        for(auto&& obj : value) {
-            rapidjson::Value element;
-            store(obj, element, allocator);
-            object.PushBack(element.Move(), allocator); 
+        void execute(rapidjson::Document& document) {
+            m_allocator = &document.GetAllocator();
+            store_impl(m_value, document);
         }
-    }
 
-    /**
-     * \brief Stores object of defined type to the given json-document
-     */ 
-    template<typename TValue>
-    void store(const TValue& value, rapidjson::Document& document) {
-        store(value, document, document.GetAllocator());
-    }
+    private:
+        using super = operation<Ts...>;
+        using policy = store_policy;
+
+        constexpr auto setter_map() const {
+            return hope::type_value_map(
+                    hope::tv<raw_int_t>(&rapidjson::Value::SetInt),
+                    hope::tv<raw_bool_t>(&rapidjson::Value::SetBool),
+                    hope::tv<raw_real_t>(&rapidjson::Value::SetDouble)
+            );
+        }
+
+        template<typename TValue>
+        void store_impl(const raw_array_t<TValue>& value, rapidjson::Value& object) {
+            object.SetArray();
+            for(auto&& obj : value) {
+                rapidjson::Value element;
+                store_impl(obj, element);
+                object.PushBack(element.Move(), *m_allocator); 
+            }
+        }
+
+        template<typename TValue>
+        void store_impl(const TValue& value, rapidjson::Value& json) {
+            using value_policy_t = typename super::template get_t<policy::value>;
+            using raw_value_t = typename value_policy_t::template raw_value_t<TValue>;
+            if constexpr (is_inbuilt_v<raw_value_t>) {
+                auto&& inner_value = value_policy_t::value(value);
+                if constexpr (std::is_same_v<raw_value_t, raw_string_t>) {
+                    json.SetString(inner_value.c_str(), inner_value.size());
+                } else if constexpr(!std::is_same_v<TValue, raw_string_t>) { // msvc needed special care
+                    auto&& method = setter_map().template get<TValue>();
+                    (json.*method)(inner_value);
+                }
+            } else if constexpr (!is_inbuilt_v<raw_value_t>) {
+                json.SetObject();
+                auto&& tuple = hope::tuple_from_struct(value, hope::field_policy::reference{});
+                tuple.for_each([&](auto&& child){
+                    using child_t = std::decay_t<decltype(child)>;
+                    static_assert(is_object_v<child_t>, 
+                        "EROCK-JSON::store: All the types of the user defined structure"
+                        "must be wrapped with erock::object structure.\n"
+                        "It is required 'cause this is only one way how to tell the library what name the object has to has"
+                    );
+                    rapidjson::Value json_child;
+                    store_impl(child.value, json_child);
+                    rapidjson::GenericStringRef<char> rapid_name{ child.name.data() };
+                    json.AddMember(rapid_name, json_child.Move(), *m_allocator);
+                });
+            }
+        }
+
+        rapidjson::Document::AllocatorType* m_allocator{ nullptr };
+        const TClass& m_value;
+    };
+
+    template<typename TClass, typename... Ts>
+    store_op(TClass, hope::type_map<Ts...>)->store_op<TClass, Ts...>;
+
 }
 
 /*! @} */
