@@ -15,6 +15,9 @@
 #pragma once
 
 #include <string_view>
+#include <optional>
+
+#include "erock/types.h"
 
 namespace erock  {
 
@@ -25,7 +28,8 @@ namespace erock  {
      *  @param TValue Internal value type (e_int_t, e_bool_t or user structure e.t.c)
      */
     template<typename TValue>
-    struct base_object final {
+    struct base_object {
+        using value_t = TValue;
         /**
          * The name of the object(or attribute in terms of xml)
          */ 
@@ -47,12 +51,22 @@ namespace erock  {
             return value;
         }
         
-        base_object& operator=(const TValue& v){
-            value = v;
+        template<typename TR>
+        base_object& operator=(TR&& v){
+            value = std::forward<TR>(v);
             return *this;
         }
     };
 
+    template<typename TValue>
+    using strict_object = base_object<TValue>;
+    
+    template<typename TValue>
+    using nullable_object = base_object<std::optional<TValue>>;
+
+    using nullable = types<nullable_object>;
+    using strict = types<strict_object>;
+    
 }
 
 /*! @} */

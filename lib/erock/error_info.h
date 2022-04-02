@@ -18,7 +18,8 @@
 #include "rapidjson/error/en.h"
 
 #include "hope/components/user_defined_types.h"
-#include "erock/strict/types.h"
+
+#include "erock/object_traits.h"
 
 #include <stdexcept>
 #include <string>
@@ -67,7 +68,7 @@ namespace erock {
         if constexpr (is_object_v<TValue>) {
             validate_obj(&rapidjson::Value::IsObject, "Object");
         }
-        if constexpr (is_inbuilt_v<TValue>){
+        if constexpr (is_inbuild_v<TValue>){
             const hope::type_value_map map(
                 hope::tv<raw_string_t>(std::pair(&rapidjson::Value::IsString, "String")),
                 hope::tv<raw_int_t>(std::pair(&rapidjson::Value::IsInt, "Int")),

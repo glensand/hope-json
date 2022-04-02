@@ -24,7 +24,7 @@
 #include <stdexcept>
 #include <string_view>
 
-namespace erock::strict {
+namespace erock {
 
     /**
      * \brief Tries to parse JSON string, if succeeded then stores all the loaded values to the related 
@@ -43,11 +43,7 @@ namespace erock::strict {
         assert_load_valid(doc.Parse(json.data()));
         TValue object;
         load_op(
-            object,
-            hope::type_map<
-                hope::type_pair<load_policy::present, presenter>,
-                hope::type_pair<load_policy::value, value_trait>
-            >{}
+            object
         )
         .execute(doc);
 
@@ -63,16 +59,13 @@ namespace erock::strict {
      */ 
     template<typename TValue>
     auto store(const TValue& value) {
-        static_assert(!is_inbuilt_v<TValue>, 
+        static_assert(!is_inbuild_v<TValue>, 
             "---- EROCK ASSERTION FAILURE ----; An attempt was made to store object of inappropriate type"
         );
 
         rapidjson::Document doc;
         store_op(
-            value,
-            hope::type_map<
-                hope::type_pair<store_policy::value, value_trait>
-            >{}
+            value
         )
         .execute(doc);
 

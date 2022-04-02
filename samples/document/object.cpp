@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "erock/strict/document.h"
-#include "erock/strict/types_macro.h"
+#include "erock/document.h"
+#include "erock/types_macro.h"
 #include "hope/tuple/print_tuple.h"
 #include "hope/tuple/tuple_policy.h"
 
@@ -27,7 +27,7 @@ int main(){
         "}";
     
     try {
-        auto&& doc = erock::strict::load<simple_struct>(json);
+        auto&& doc = erock::load<simple_struct>(json);
 
         std::cout << "Parsed" << std::endl;
         auto&& tuple = tuple_from_struct(doc, hope::field_policy::reference{});
@@ -43,7 +43,7 @@ int main(){
     s.field3 = "new string";
     s.field2 = 11.0;
     s.struct_field.value.field1 = 38;
-    auto&& json_serialized = erock::strict::store(s);
+    auto&& json_serialized = erock::store(s);
     std::cout << json_serialized << std::endl;
     return 0;
 }

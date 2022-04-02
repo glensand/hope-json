@@ -15,7 +15,7 @@
 #pragma once
 
 #include <type_traits>
-#include "erock/base_object.h"
+#include "erock/object.h"
 
 namespace erock  {
 

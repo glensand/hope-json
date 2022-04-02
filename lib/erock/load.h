@@ -15,44 +15,37 @@
 #pragma once
 
 #include <string_view>
+#include <type_traits>
 
-#include "hope/tuple/tuple_from_struct.h"
+#include "rapidjson/document.h"
+
 #include "hope/typelist/type_value_map.h"
-#include "hope/components/typemap.h"
+#include "hope/tuple/tuple_from_struct.h"
 
-#include "erock/operation.h"
+#include "erock/types.h"
 #include "erock/object_traits.h"
-#include "erock/error_info.h"
-#include "erock/strict/types.h"
-#include "erock/strict/document_policy.h"
+#include "erock/policy.h"
 
 namespace erock {
-
-    struct load_policy final {
-        struct present final { };
-        struct value final { };
-    };
         
-    template<typename TClass, typename... Ts>
-    class load_op final : public operation<Ts...>{
+    template<typename TClass>
+    class load_op final {
     public:
         static_assert(!is_object_v<TClass>, 
             "EROCK-JSON::load: erock::object type should not be used as wrapper as json document\n"
             "Remove the wrapper or pass value field and try compile again"
         );
 
-        load_op(TClass& val, hope::type_map<Ts...>) 
-            : m_value(val){
+        load_op(TClass& val) 
+            : m_object(val){
 
         }
 
         void execute(rapidjson::Document& json) {
-            extract(json, m_value);
+            extract(json, m_object);
         }
 
     private:
-        using super = operation<Ts...>;
-        using policy = load_policy;
 
         constexpr auto getter_map() const {
             return hope::type_value_map(
@@ -63,16 +56,14 @@ namespace erock {
             );
         }
 
-        template<typename TValue>
-        void extract(rapidjson::Value& json, TValue& val){
-            using value_policy_t = typename super::template get_t<policy::value>;
-            using raw_value_t = typename value_policy_t::template raw_value_t<TValue>;
-            if constexpr (is_inbuilt_v<raw_value_t>) {
+        template<typename TObject>
+        void extract(rapidjson::Value& json, TObject& val){
+            using raw_value_t = typename value_trait<TObject>::value_t;
+            if constexpr (is_inbuild_v<raw_value_t>) {
                 auto&& map = getter_map();
                 auto&& method = map.template get<raw_value_t>();
-                auto&& inner_value = value_policy_t::value(val);
-                inner_value = (json.*method)();
-            } else if constexpr (!is_inbuilt_v<raw_value_t>) {
+                val = (json.*method)();
+            } else if constexpr (!is_inbuild_v<raw_value_t>) {
                 auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
                 tuple.for_each([&](auto&& field){
                     using field_t = std::decay_t<decltype(field)>;
@@ -84,30 +75,30 @@ namespace erock {
                     );
 
                     auto&& json_value = json[field.name.data()];
-                    using present_t = typename super::template get_t<policy::present>;
-                    if(present_t::template is<value_t>(json_value, field.name)) {
+                    present_policy<field_t> p{};
+                    if(p.template is<value_t>(json_value, field.name)) {
                         extract(json_value, field.value);
                     }
                 });
             }
         }
 
-        template<typename TValue> 
-        void extract(rapidjson::Value& json, raw_array_t<TValue>& values) {
+        template<typename TObject> 
+        void extract(rapidjson::Value& json, raw_array_t<TObject>& values) {
             for(auto&& it : json.GetArray()) {
-                TValue cur_value;
-                using value_t = typename super::template get_t<policy::value>::template raw_value_t<TValue>;
-                assert_type_valid<value_t>(it, "An element of the Array");
-                extract(it, cur_value);
-                values.emplace_back(std::move(cur_value));
+                TObject cur_object;
+                using raw_value_t = typename value_trait<TObject>::value_t;
+                assert_type_valid<raw_value_t>(it, "An element of the Array");
+                extract(it, cur_object);
+                values.emplace_back(std::move(cur_object));
             }
         }
 
-        TClass& m_value;
+        TClass& m_object;
     };
 
-    template<typename TClass, typename... Ts>
-    load_op(TClass, hope::type_map<Ts...>)->load_op<TClass, Ts...>;
+    template<typename TClass>
+    load_op(TClass)->load_op<TClass>;
 
 }
 

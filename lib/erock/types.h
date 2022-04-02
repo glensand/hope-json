@@ -55,7 +55,37 @@ namespace erock {
     using raw_array_t = std::vector<TValue>;
 
     template<typename TValue>
-    constexpr bool is_inbuilt_v = hope::contains<TValue>(registered_raw_types_t{});
+    constexpr bool is_inbuild_v = hope::contains<TValue>(registered_raw_types_t{});
+
+    template <template<typename> typename TObject>
+    struct types final {
+
+        /**
+         * Named integer, this type has to be used to load/store integer from json
+         */
+        using int_t = TObject<raw_int_t>;
+
+        /**
+         * Named floating point value, this type has to be used to load/store floating point value from json
+         */
+        using real_t = TObject<raw_real_t>;
+
+        /**
+         * Named boolean value, this type has to be used to load/store boolean value from json
+         */
+        using bool_t = TObject<raw_bool_t>;
+
+        /**
+         * Named string object, this type has to be used to load/store string value from json 
+         */
+        using string_t = TObject<raw_string_t>;
+
+        /** The only one templated type, represents array(in terms as json); usage is obvious
+         */
+        template<typename TValue>
+        using array_t = TObject<raw_array_t<TValue>>;
+
+    };
 
 }
 

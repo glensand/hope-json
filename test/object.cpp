@@ -6,8 +6,8 @@
  * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-rock-json
  */
 
-#include "erock/strict/document.h"
-#include "erock/strict/types_macro.h"
+#include "erock/document.h"
+#include "erock/types_macro.h"
 #include "gtest/gtest.h"
 #include <iostream>
 
@@ -81,7 +81,7 @@ namespace{
 
 TEST(Initial, simple_struct){
     using doc_t = simple_struct;
-    auto&& doc = erock::strict::load<doc_t>(simple_json);
+    auto&& doc = erock::load<doc_t>(simple_json);
     ASSERT_TRUE(doc.field1 == 11);
     ASSERT_TRUE(doc.field2);
     ASSERT_TRUE(std::abs(doc.field3 - 11.0) < FLT_EPSILON);
@@ -89,7 +89,7 @@ TEST(Initial, simple_struct){
 
 TEST(Initial, struct_with_struct){
     using doc_t = struct_with_struct;
-    auto&& doc = erock::strict::load<doc_t>(struct_with_struct_json);
+    auto&& doc = erock::load<doc_t>(struct_with_struct_json);
     auto&& inner_structure = doc.struct_field.value;
     ASSERT_TRUE(inner_structure.field1 == 11);
     ASSERT_TRUE(inner_structure.field2);
@@ -98,7 +98,7 @@ TEST(Initial, struct_with_struct){
 
 TEST(Initial, struct_with_struct_array){
     using doc_t = struct_with_struct_array;
-    auto&& doc = erock::strict::load<doc_t>(struct_with_struct_array_json);
+    auto&& doc = erock::load<doc_t>(struct_with_struct_array_json);
     auto&& vec = doc.struct_array.value;
     ASSERT_TRUE(vec.size() == 3);
     for(auto&& v : vec){
@@ -110,14 +110,14 @@ TEST(Initial, struct_with_struct_array){
 
 TEST(Initial, struct_with_simple_array){
     using doc_t = struct_with_struct_array;
-    auto&& doc = erock::strict::load<struct_with_simple_array>(simple_array_json);
+    auto&& doc = erock::load<struct_with_simple_array>(simple_array_json);
     auto&& vec = doc.simple_array.value;
     ASSERT_TRUE(vec.size() == 7);
 }
 
 TEST(Store, struct_with_simple_array){
     using doc_t = struct_with_struct_array;
-    auto&& doc = erock::strict::load<struct_with_simple_array>(simple_array_json);
-    auto&& loaded_result = erock::strict::store(doc);
-    auto&& loaded_doc = erock::strict::load<struct_with_simple_array>(loaded_result);
+    auto&& doc = erock::load<struct_with_simple_array>(simple_array_json);
+    auto&& loaded_result = erock::store(doc);
+    auto&& loaded_doc = erock::load<struct_with_simple_array>(loaded_result);
 }
