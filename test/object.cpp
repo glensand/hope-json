@@ -14,9 +14,9 @@
 namespace{
 
     struct simple_struct final {
-        SJINT(field1);
-        SJBOOL(field2);
-        SJREAL(field3);
+        NJINT(field1);
+        NJBOOL(field2);
+        NJREAL(field3);
     };
 
     struct struct_with_struct final {

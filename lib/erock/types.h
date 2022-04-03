@@ -54,9 +54,6 @@ namespace erock {
     template<typename TValue>
     using raw_array_t = std::vector<TValue>;
 
-    template<typename TValue>
-    constexpr bool is_inbuild_v = hope::contains<TValue>(registered_raw_types_t{});
-
     template <template<typename> typename TObject>
     struct types final {
 

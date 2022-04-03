@@ -24,4 +24,12 @@
 #define SJARRAY(Name, INNER_TYPE) erock::strict::array_t<INNER_TYPE> Name{ #Name }
 #define SJOBJECT(Name, INNER_TYPE) erock::strict_object<INNER_TYPE> Name{ #Name }
 
+#define NJINT(Name) erock::nullable::int_t Name{ #Name }
+#define NJREAL(Name) erock::nullable::real_t Name{ #Name } 
+#define NJBOOL(Name) erock::nullable::bool_t Name{ #Name }
+#define NJSTRING(Name) erock::nullable::string_t Name{ #Name }
+
+#define NJARRAY(Name, INNER_TYPE) erock::nullable::array_t<INNER_TYPE> Name{ #Name }
+#define NJOBJECT(Name, INNER_TYPE) erock::nullable_object<INNER_TYPE> Name{ #Name }
+
 /*! @} */

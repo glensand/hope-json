@@ -53,7 +53,7 @@ namespace erock {
     };
 
     template<typename TValue>
-    struct value_trait<std::optional<TValue>> {
+    struct value_trait<optional<TValue>> {
         using value_t = TValue;
     };
 
@@ -64,7 +64,7 @@ namespace erock {
 
     template<typename TValue>
     bool has(const nullable_object<TValue>& obj){
-        return obj.value.has_value();
+        return obj.value.has;
     }
 
     template<typename TValue>
@@ -73,8 +73,8 @@ namespace erock {
     }
 
     template<typename TValue>
-    const TValue& get(const std::optional<TValue>& obj){
-        return obj.value;
+    const TValue& get(const optional<TValue>& obj){
+        return obj;
     }
 
 }

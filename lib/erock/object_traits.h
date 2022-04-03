@@ -33,6 +33,18 @@ namespace erock  {
     template<typename TValue>
     constexpr bool is_object_v = is_object<TValue>::value;
     
+    template<typename TValue>
+    struct is_inbuild {
+        constexpr static bool value = hope::contains<TValue>(registered_raw_types_t{});
+    };
+
+    template<typename TValue>
+    struct is_inbuild<optional<TValue>> {
+        constexpr static bool value = hope::contains<TValue>(registered_raw_types_t{});
+    };
+
+    template<typename TValue>
+    constexpr bool is_inbuild_v = is_inbuild<TValue>::value;
 }
 
 /*! @} */

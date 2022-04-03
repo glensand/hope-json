@@ -44,7 +44,7 @@ namespace erock {
 
     inline
     void assert_object_not_null(rapidjson::Value& obj, std::string_view name){
-        if(obj.IsNull()){
+        if(obj.IsNull()) {
             throw std::runtime_error(
                 extract_exception_with_name(name) + "is not exists in the given json string."
             );

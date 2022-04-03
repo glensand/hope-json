@@ -15,8 +15,8 @@
 #pragma once
 
 #include <string_view>
-#include <optional>
 
+#include "erock/optional.h"
 #include "erock/types.h"
 
 namespace erock  {
@@ -46,15 +46,40 @@ namespace erock  {
         operator const TValue&() const {
             return value;
         }
-
-        operator TValue&() {
-            return value;
-        }
         
         template<typename TR>
         base_object& operator=(TR&& v){
             value = std::forward<TR>(v);
             return *this;
+        }
+
+        template<typename TR>
+        bool operator==(const TR& rhs) const {
+            return value == rhs;
+        }
+
+        template<typename TR>
+        bool operator<(const TR& rhs) const {
+            return value < rhs;
+        }
+
+        template<typename TR>
+        bool operator>(const TR& rhs) const {
+            return value > rhs;
+        }
+
+        template<typename TR>
+        auto operator-(const TR& v) const {
+            return value - v;
+        }
+
+        template<typename TR>
+        auto operator+(const TR& v) const {
+            return value + v;
+        }
+
+        operator bool() const {
+            return value == true;
         }
     };
 
@@ -62,7 +87,7 @@ namespace erock  {
     using strict_object = base_object<TValue>;
     
     template<typename TValue>
-    using nullable_object = base_object<std::optional<TValue>>;
+    using nullable_object = base_object<optional<TValue>>;
 
     using nullable = types<nullable_object>;
     using strict = types<strict_object>;
