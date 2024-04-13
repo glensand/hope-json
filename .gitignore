@@ -258,3 +258,4 @@ lib/erock/strict/.DS_Store
 build/.cmake/api/v1/reply/codemodel-v2-e0341c7ef3596b7e00a7.json
 build/.cmake/api/v1/reply/index-2021-11-09T18-58-38-0956.json
 build/.cmake/api/v1/reply/target-erocklib-Debug-ccb3d915c9a4eac1d665.json
+build/*
