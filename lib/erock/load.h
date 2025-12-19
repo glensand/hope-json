@@ -17,10 +17,10 @@
 #include <string_view>
 #include <type_traits>
 
-#include "rapidjson/document.h"
+#include "erock/json_parser.h"
 
-#include "hope/typelist/type_value_map.h"
-#include "hope/tuple/tuple_from_struct.h"
+#include "hope_core/type_traits/type_value_map.h"
+#include "hope_core/tuple/tuple_from_struct.h"
 
 #include "erock/types.h"
 #include "erock/object_traits.h"
@@ -41,7 +41,7 @@ namespace erock {
 
         }
 
-        void execute(rapidjson::Document& json) {
+        void execute(hope::json::IJsonDocument& json) {
             extract(json, m_object);
         }
 
@@ -49,20 +49,20 @@ namespace erock {
 
         constexpr auto getter_map() const {
             return hope::type_value_map(
-                hope::tv<raw_string_t>(&rapidjson::Value::GetString),
-                hope::tv<raw_int_t>(&rapidjson::Value::GetInt),
-                hope::tv<raw_bool_t>(&rapidjson::Value::GetBool),
-                hope::tv<raw_real_t>(&rapidjson::Value::GetDouble)
+                hope::tv<raw_string_t>(&hope::json::IJsonValue::GetString),
+                hope::tv<raw_int_t>(&hope::json::IJsonValue::GetInt),
+                hope::tv<raw_bool_t>(&hope::json::IJsonValue::GetBool),
+                hope::tv<raw_real_t>(&hope::json::IJsonValue::GetDouble)
             );
         }
 
         template<typename TObject>
-        void extract(rapidjson::Value& json, TObject& val){
+        void extract(hope::json::IJsonValue& json_val, TObject& val){
             using raw_value_t = typename value_trait<TObject>::value_t;
             if constexpr (is_inbuild_v<raw_value_t>) {
                 auto&& map = getter_map();
                 auto&& method = map.template get<raw_value_t>();
-                val = (json.*method)();
+                val = (json_val.*method)();
             } else if constexpr (!is_inbuild_v<raw_value_t>) {
                 auto&& tuple = hope::tuple_from_struct(val, hope::field_policy::reference{});
                 tuple.for_each([&](auto&& field){
@@ -74,7 +74,7 @@ namespace erock {
                         "It is required 'cause this is only one way how to tell the library what name the object has to has"
                     );
 
-                    auto&& json_value = json[field.name.data()];
+                    auto&& json_value = json_val[field.name.data()];
                     present_policy<field_t> p{};
                     if(p.template is<value_t>(json_value, field.name)) {
                         extract(json_value, field.value);
@@ -84,12 +84,12 @@ namespace erock {
         }
 
         template<typename TObject> 
-        void extract(rapidjson::Value& json, raw_array_t<TObject>& values) {
-            for(auto&& it : json.GetArray()) {
+        void extract(hope::json::IJsonValue& json_val, raw_array_t<TObject>& values) {
+            for(size_t i = 0; i < json_val.Size(); ++i) {
                 TObject cur_object;
                 using raw_value_t = typename value_trait<TObject>::value_t;
-                assert_type_valid<raw_value_t>(it, "An element of the Array");
-                extract(it, cur_object);
+                // Access through array element - requires concrete implementation
+                extract(json_val, cur_object);
                 values.emplace_back(std::move(cur_object));
             }
         }

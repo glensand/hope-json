@@ -18,10 +18,4 @@ file(GLOB DOC_SOURSES
 
 add_executable(${BINARY} ${DOC_HEADERS} ${DOC_SOURSES})
 
-target_include_directories(${BINARY} 
-  PUBLIC ${HOPE_INCLUDE_DIR}
-  PUBLIC ${RAPIDJSON_INCLUDE_DIR}
-)
-
-add_dependencies(${BINARY} hope)
-add_dependencies(${BINARY} rapidjson)
+target_link_libraries(${BINARY} hope-core)

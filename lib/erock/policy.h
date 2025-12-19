@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include "rapidjson/error/en.h"
 #include "erock/error_info.h"
 
 #include <stdexcept>
@@ -32,7 +31,7 @@ namespace erock {
     template<typename TValue>
     struct present_policy<strict_object<TValue>> {
         template<typename TExpected>
-        static bool is(rapidjson::Value& value, std::string_view name) { 
+        static bool is(hope::json::IJsonValue& value, std::string_view name) { 
             assert_object_not_null(value, name);
             assert_type_valid<TExpected>(value, name);
             return true; 
@@ -42,7 +41,7 @@ namespace erock {
     template<typename TValue>
     struct present_policy<nullable_object<TValue>> {
         template<typename TExpected>
-        static bool is(rapidjson::Value& value, std::string_view name) { 
+        static bool is(hope::json::IJsonValue& value, std::string_view name) { 
             return !value.IsNull();
         }
     };

@@ -1,0 +1,3 @@
+[submodule "ext/hope-core"]
+	path = ext/hope-core
+	url = https://github.com/glensand/hope-core.git

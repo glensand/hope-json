@@ -15,13 +15,7 @@ file(GLOB R_HEADERS
 
 add_library(erocklib INTERFACE ${R_HEADERS})
 target_include_directories(erocklib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(erocklib 
-    INTERFACE ${HOPE_INCLUDE_DIR}
-    INTERFACE ${RAPIDJSON_INCLUDE_DIR}
-)
-
-add_dependencies(erocklib hope)
-add_dependencies(erocklib rapidjson)
+target_link_libraries(erocklib INTERFACE hope-core)
 
 # instalation
 set(CMAKE_INSTALL_DIRECTORY ${CMAKE_BINARY_DIR})

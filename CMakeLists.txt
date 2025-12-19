@@ -4,12 +4,11 @@ project(erock-main)
 
 enable_testing()
 
-include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
-include("ext/hope.cmake")
-include("ext/rapidjson.cmake")
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Add hope-core submodule (without tests to avoid googletest conflicts)
+add_subdirectory(ext/hope-core/lib)
 
 add_subdirectory(test)
 add_subdirectory(samples/document)

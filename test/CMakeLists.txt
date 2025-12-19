@@ -50,13 +50,6 @@ file(GLOB TEST_SOURSES
 
 add_executable(${BINARY} ${TEST_HEADERS} ${TEST_SOURSES})
 
-target_include_directories(${BINARY} 
-  PUBLIC ${HOPE_INCLUDE_DIR}
-  PUBLIC ${RAPIDJSON_INCLUDE_DIR}
-)
-
-add_dependencies(${BINARY} hope)
-add_dependencies(${BINARY} rapidjson)
+target_link_libraries(${BINARY} hope-core gtest_main)
 
 add_test(NAME ${BINARY} COMMAND ${BINARY})
-target_link_libraries(${BINARY} gtest_main)

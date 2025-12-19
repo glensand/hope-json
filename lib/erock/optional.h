@@ -15,7 +15,7 @@
 #pragma once
 
 #include "erock/types.h"
-#include "hope/components/user_defined_types.h"
+#include "hope_core/type_traits/user_defined_types.h"
 
 namespace erock  {
 

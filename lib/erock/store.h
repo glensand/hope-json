@@ -17,10 +17,10 @@
 #include <string_view>
 #include <type_traits>
 
-#include "rapidjson/document.h"
+#include "erock/json_parser.h"
 
-#include "hope/typelist/type_value_map.h"
-#include "hope/tuple/tuple_from_struct.h"
+#include "hope_core/type_traits/type_value_map.h"
+#include "hope_core/tuple/tuple_from_struct.h"
 
 #include "erock/types.h"
 
@@ -34,42 +34,41 @@ namespace erock {
 
         }
 
-        void execute(rapidjson::Document& document) {
-            m_allocator = &document.GetAllocator();
+        void execute(hope::json::IJsonDocument& document) {
             store_impl(m_object, document);
         }
 
     private:
         constexpr auto setter_map() const {
             return hope::type_value_map(
-                    hope::tv<raw_int_t>(&rapidjson::Value::SetInt),
-                    hope::tv<raw_bool_t>(&rapidjson::Value::SetBool),
-                    hope::tv<raw_real_t>(&rapidjson::Value::SetDouble)
+                    hope::tv<raw_int_t>(&hope::json::IJsonValue::SetInt),
+                    hope::tv<raw_bool_t>(&hope::json::IJsonValue::SetBool),
+                    hope::tv<raw_real_t>(&hope::json::IJsonValue::SetDouble)
             );
         }
 
         template<typename TObject>
-        void store_impl(const raw_array_t<TObject>& value, rapidjson::Value& object) {
+        void store_impl(const raw_array_t<TObject>& value, hope::json::IJsonValue& object) {
             object.SetArray();
             for(auto&& obj : value) {
-                rapidjson::Value element;
+                hope::json::Value element;
                 store_impl(obj, element);
-                object.PushBack(element.Move(), *m_allocator); 
+                object.PushBack(element.Move(), nullptr); 
             }
         }
 
         template<typename TObject>
-        void store_impl(const TObject& value, rapidjson::Value& json) {
+        void store_impl(const TObject& value, hope::json::IJsonValue& json_val) {
             if constexpr (is_inbuild_v<TObject>) {
                 using raw_value_t = typename value_trait<TObject>::value_t;
                 if constexpr (std::is_same_v<raw_value_t, raw_string_t>) {
-                    json.SetString(get(value).c_str(), get(value).size());
+                    json_val.SetString(get(value).c_str(), get(value).size());
                 } else if constexpr(!std::is_same_v<raw_value_t, raw_string_t>) { // msvc needed special care
                     auto&& method = setter_map().template get<raw_value_t>();
-                    (json.*method)(get(value));
+                    (json_val.*method)(get(value));
                 }
             } else if constexpr (!is_inbuild_v<TObject>) {
-                json.SetObject();
+                json_val.SetObject();
                 auto&& tuple = hope::tuple_from_struct(value, hope::field_policy::reference{});
                 tuple.for_each([&](auto&& child){
                     if(!has(child)) return;
@@ -79,15 +78,13 @@ namespace erock {
                         "must be wrapped with erock::object structure.\n"
                         "It is required 'cause this is only one way how to tell the library what name the object has to has"
                     );
-                    rapidjson::Value json_child;
+                    hope::json::Value json_child;
                     store_impl(child.value, json_child);
-                    rapidjson::GenericStringRef<char> rapid_name{ child.name.data() };
-                    json.AddMember(rapid_name, json_child.Move(), *m_allocator);
+                    json_val.AddMember(child.name.data(), json_child.Move(), nullptr);
                 });
             }
         }
 
-        rapidjson::Document::AllocatorType* m_allocator{ nullptr };
         const TClass& m_object;
     };
 

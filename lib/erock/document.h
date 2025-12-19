@@ -14,8 +14,7 @@
 
 #pragma once
 
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
+#include "erock/json_parser.h"
 
 #include "erock/load.h"
 #include "erock/store.h"
@@ -38,9 +37,9 @@ namespace erock {
      * \throws std::runtime_error with description of the occurred error (Invalid value, not all braces are placed right e.t.c)
      */ 
     template<typename TValue>
-    auto load(std::string_view json) {
-        rapidjson::Document doc;
-        assert_load_valid(doc.Parse(json.data()));
+    auto load(std::string_view json_str) {
+        hope::json::Document doc;
+        assert_load_valid(doc.Parse(json_str.data()));
         TValue object;
         load_op(
             object
@@ -63,16 +62,13 @@ namespace erock {
             "---- EROCK ASSERTION FAILURE ----; An attempt was made to store object of inappropriate type"
         );
 
-        rapidjson::Document doc;
+        hope::json::Document doc;
         store_op(
             value
         )
         .execute(doc);
 
-        rapidjson::StringBuffer buffer;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-        doc.Accept(writer);
-        return std::string { buffer.GetString() };
+        return doc.Stringify();
     }
 }
 
