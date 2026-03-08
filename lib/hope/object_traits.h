@@ -1,4 +1,4 @@
-/* Copyright (C) 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2022 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -15,9 +15,9 @@
 #pragma once
 
 #include <type_traits>
-#include "erock/object.h"
+#include "hope/object.h"
 
-namespace erock  {
+namespace hope  {
 
     template <typename T>
     struct is_object final : std::false_type {};
@@ -26,13 +26,13 @@ namespace erock  {
     struct is_object<base_object<TValue>> final : std::true_type {};
 
     /**
-     * Checks if the specified type is object in terms of the erock library. 
-     * NOTE: Only erock objects might be processed by load/store operations 
+     * Checks if the specified type is object in terms of the hope library.
+     * NOTE: Only hope objects might be processed by load/store operations
      * @param TValue the type to be checked
      */
     template<typename TValue>
     constexpr bool is_object_v = is_object<TValue>::value;
-    
+
     template<typename TValue>
     struct is_inbuild {
         constexpr static bool value = hope::contains<TValue>(registered_raw_types_t{});

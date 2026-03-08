@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 - 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2021 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -14,28 +14,28 @@
 
 #pragma once
 
-#include "erock/json_parser.h"
+#include "hope/json_parser.h"
 
-#include "erock/load.h"
-#include "erock/store.h"
-#include "erock/error_info.h"
+#include "hope/load.h"
+#include "hope/store.h"
+#include "hope/error_info.h"
 
 #include <stdexcept>
 #include <string_view>
 
-namespace erock {
+namespace hope {
 
     /**
-     * \brief Tries to parse JSON string, if succeeded then stores all the loaded values to the related 
-     * fields of the structure. The type of the structure is required, obviously; 
-     * 
+     * \brief Tries to parse JSON string, if succeeded then stores all the loaded values to the related
+     * fields of the structure. The type of the structure is required, obviously;
+     *
      * @param json String with json to be parsed;
-     * @param TValue - Type of the structure which fields matches the objects from JSON file. Each field ot the TValue 
-     * have to be an instance of the erock::field structure with proper name. All these fields are required in the file, 
+     * @param TValue - Type of the structure which fields matches the objects from JSON file. Each field ot the TValue
+     * have to be an instance of the hope::field structure with proper name. All these fields are required in the file,
      * if the attribute of the object is not present in the file, the default value will be stored to the desired position.
-     * 
+     *
      * \throws std::runtime_error with description of the occurred error (Invalid value, not all braces are placed right e.t.c)
-     */ 
+     */
     template<typename TValue>
     auto load(std::string_view json_str) {
         hope::json::Document doc;
@@ -52,14 +52,14 @@ namespace erock {
     /**
      * \brief Converts given structure to the JSON DOM tree, then stores it to the string
      * @param value Object to be stored to the json
-     * 
+     *
      * @return valid JSON string (result string is the reflection of the given object)
      * \throws std::runctime error if the object is not valid
-     */ 
+     */
     template<typename TValue>
     auto store(const TValue& value) {
-        static_assert(!is_inbuild_v<TValue>, 
-            "---- EROCK ASSERTION FAILURE ----; An attempt was made to store object of inappropriate type"
+        static_assert(!is_inbuild_v<TValue>,
+            "---- HOPE-JSON ASSERTION FAILURE ----; An attempt was made to store object of inappropriate type"
         );
 
         hope::json::Document doc;

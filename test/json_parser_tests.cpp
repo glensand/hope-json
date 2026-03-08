@@ -1,9 +1,9 @@
-/* Copyright (C) 2025 - JSON Parser Tests
+/* Copyright (C) 2025 - 2026 JSON Parser Tests
  * Comprehensive test suite for the custom JSON parser
  */
 
 #include <gtest/gtest.h>
-#include "erock/json_parser.h"
+#include "hope/json_parser.h"
 #include <sstream>
 
 using namespace hope::json;

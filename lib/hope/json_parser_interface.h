@@ -1,4 +1,4 @@
-/* Copyright (C) 2025 - JSON Parser Interface
+/* Copyright (C) 2025 - 2026 JSON Parser Interface
  * Interface for pluggable JSON parsers
  */
 
@@ -12,9 +12,9 @@ namespace hope::json {
 
     /**
      * \brief Abstract interface for JSON value representation
-     * 
+     *
      * All JSON parser implementations should provide a Value-like class
-     * that supports this interface for interoperability with erock library.
+     * that supports this interface for interoperability with hope-json.
      */
     class IJsonValue {
     public:

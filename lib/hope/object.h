@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 - 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2021 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -16,15 +16,15 @@
 
 #include <string_view>
 
-#include "erock/optional.h"
-#include "erock/types.h"
+#include "hope/optional.h"
+#include "hope/types.h"
 
-namespace erock  {
+namespace hope  {
 
     /**
      * \brief Named field of the JSON's object, the field is also complete object, 'cause object = object | Term
      * This structure should be used to each member of user's type.
-     * 
+     *
      *  @param TValue Internal value type (e_int_t, e_bool_t or user structure e.t.c)
      */
     template<typename TValue>
@@ -32,7 +32,7 @@ namespace erock  {
         using value_t = TValue;
         /**
          * The name of the object(or attribute in terms of xml)
-         */ 
+         */
         const std::string_view name;
 
         /**
@@ -46,7 +46,7 @@ namespace erock  {
         operator const TValue&() const {
             return value;
         }
-        
+
         template<typename TR>
         base_object& operator=(TR&& v){
             value = std::forward<TR>(v);
@@ -85,13 +85,13 @@ namespace erock  {
 
     template<typename TValue>
     using strict_object = base_object<TValue>;
-    
+
     template<typename TValue>
     using nullable_object = base_object<optional<TValue>>;
 
     using nullable = types<nullable_object>;
     using strict = types<strict_object>;
-    
+
 }
 
 /*! @} */

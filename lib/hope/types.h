@@ -1,4 +1,4 @@
-/* Copyright (C) 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2022 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -21,7 +21,7 @@
 #include <vector>
 #include <type_traits>
 
-namespace erock {
+namespace hope {
 
     /**
      * Integer type, 64 bit are used to simplify usage in signed-unsigned context
@@ -39,18 +39,18 @@ namespace erock {
     using raw_bool_t = bool;
 
     /**
-     * std::string (not templated, without any allocators or inner chars customization) 'cause the code has to be 
+     * std::string (not templated, without any allocators or inner chars customization) 'cause the code has to be
      * as simple as possible (idology of the library)
-     */ 
+     */
     using raw_string_t = std::string;
 
     /**
-     */ 
+     */
     using registered_raw_types_t = hope::type_list<raw_int_t, raw_real_t, raw_bool_t, raw_string_t>;
 
     /**
-     * Alias to erock array template class (uses standard vector 'cause it is quete simple)
-     */ 
+     * Alias to hope array template class (uses standard vector 'cause it is quete simple)
+     */
     template<typename TValue>
     using raw_array_t = std::vector<TValue>;
 
@@ -73,7 +73,7 @@ namespace erock {
         using bool_t = TObject<raw_bool_t>;
 
         /**
-         * Named string object, this type has to be used to load/store string value from json 
+         * Named string object, this type has to be used to load/store string value from json
          */
         using string_t = TObject<raw_string_t>;
 

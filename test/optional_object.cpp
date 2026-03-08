@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 - 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2021 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -6,7 +6,7 @@
  * this file. If not, please write to: bezborodoff.gleb@gmail.com, or visit : https://github.com/glensand/e-rock-json
  */
 
-#include "erock/document.h"
-#include "erock/types_macro.h"
+#include "hope/document.h"
+#include "hope/types_macro.h"
 #include "gtest/gtest.h"
 #include <iostream>

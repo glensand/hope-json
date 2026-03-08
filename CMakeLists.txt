@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(erock-main)
+project(hope-json)
 
 enable_testing()
 

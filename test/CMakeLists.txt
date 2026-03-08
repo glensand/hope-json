@@ -1,5 +1,5 @@
-project(erocktest)
-set(BINARY erocktest)
+project(hopejsontest)
+set(BINARY hopejsontest)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

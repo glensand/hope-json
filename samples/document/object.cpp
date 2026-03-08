@@ -1,11 +1,11 @@
 #include <iostream>
 #include <fstream>
 
-#include "erock/document.h"
-#include "erock/types_macro.h"
+#include "hope/document.h"
+#include "hope/types_macro.h"
 #include "hope_core/tuple/print_tuple.h"
 #include "hope_core/tuple/tuple_policy.h"
-#include "erock/optional.h"
+#include "hope/optional.h"
 
 struct simple_struct final {
     NJINT(field1);
@@ -28,19 +28,19 @@ int main(){
         "}";
     
     try {
-        auto&& doc = erock::load<simple_struct>(json);
+        auto&& doc = hope::load<simple_struct>(json);
 
         std::cout << "Parsed" << std::endl;
         auto&& tuple = tuple_from_struct(doc, hope::field_policy::reference{});
         tuple.for_each([&](auto&& field) {
-            std::cout << field.name << " : " << erock::get(field.value) << std::endl;
+            std::cout << field.name << " : " << hope::get(field.value) << std::endl;
         });
     }
     catch(const std::exception& ex) {
         std::cout << ex.what();
     }
 
-    auto&& doc = erock::load<simple_struct>(json);
+    auto&& doc = hope::load<simple_struct>(json);
     std::cout << "Parsed" << std::endl;
     simple_struct ss;
     auto&& tuple = tuple_from_struct(ss, hope::field_policy::reference{});
@@ -49,7 +49,7 @@ int main(){
     s.field3 = "new string";
     s.field2 = 11.0;
     s.struct_field.value.field1 = 38;
-    auto&& json_serialized = erock::store(s);
+    auto&& json_serialized = hope::store(s);
     std::cout << json_serialized << std::endl;
 
     return 0;

@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 - 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2021 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -14,34 +14,34 @@
 
 #pragma once
 
-#include "erock/error_info.h"
+#include "hope/error_info.h"
 
 #include <stdexcept>
 #include <string>
 
-namespace erock {
+namespace hope {
 
     /**
      * \brief Policy is used to check if a value exists
-     * 
+     *
      * */
     template<typename TValue>
     struct present_policy;
-    
+
     template<typename TValue>
     struct present_policy<strict_object<TValue>> {
         template<typename TExpected>
-        static bool is(hope::json::IJsonValue& value, std::string_view name) { 
+        static bool is(hope::json::Value& value, std::string_view name) {
             assert_object_not_null(value, name);
             assert_type_valid<TExpected>(value, name);
-            return true; 
+            return true;
         }
     };
 
     template<typename TValue>
     struct present_policy<nullable_object<TValue>> {
         template<typename TExpected>
-        static bool is(hope::json::IJsonValue& value, std::string_view name) { 
+        static bool is(hope::json::Value& value, std::string_view name) {
             return !value.IsNull();
         }
     };

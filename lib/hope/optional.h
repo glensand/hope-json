@@ -1,4 +1,4 @@
-/* Copyright (C) 2021 - 2022 Gleb Bezborodov - All Rights Reserved
+/* Copyright (C) 2021 - 2026 Gleb Bezborodov - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  *
@@ -9,15 +9,15 @@
 /*! \defgroup <core> Core
     @{
     \file
-    \brief 
+    \brief
 */
 
 #pragma once
 
-#include "erock/types.h"
+#include "hope/types.h"
 #include "hope_core/type_traits/user_defined_types.h"
 
-namespace erock  {
+namespace hope  {
 
     template<typename TValue>
     struct optional {
@@ -64,7 +64,7 @@ namespace erock  {
         }
 
     };
-    
+
 }
 
 /*! @} */

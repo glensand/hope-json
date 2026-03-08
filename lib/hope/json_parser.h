@@ -1,4 +1,5 @@
-/* Copyright (C) 2025 - Custom JSON Parser
+/* Copyright (C) 2025 - 2026 Custom JSON Parser
+ * Not for production, use as sample only, write critical code manually!
  * You may use, distribute and modify this code under the
  * terms of the MIT license.
  */
@@ -21,7 +22,7 @@
 #include <cmath>
 #include <cstdio>
 
-#include "erock/json_parser_interface.h"
+#include "hope/json_parser_interface.h"
 
 namespace hope::json {
 
@@ -180,7 +181,7 @@ namespace hope::json {
         void SetInt(int i) { type_ = ValueType::kInt; int_value_ = i; }
         void SetInt64(int64_t i) { type_ = ValueType::kInt; int_value_ = i; }
         void SetDouble(double d) { type_ = ValueType::kDouble; double_value_ = d; }
-        
+
         void SetString(const char* s, size_t len) {
             type_ = ValueType::kString;
             string_value_.assign(s, len);
@@ -271,7 +272,7 @@ namespace hope::json {
     class ParseResult {
     public:
         ParseResult() : ok_(true), error_code_(0), offset_(0) {}
-        explicit ParseResult(int code, size_t offset) 
+        explicit ParseResult(int code, size_t offset)
             : ok_(false), error_code_(code), offset_(offset) {}
 
         bool operator!() const { return !ok_; }
@@ -296,7 +297,7 @@ namespace hope::json {
                 auto result = parser.parseValue();
                 *static_cast<Value*>(this) = std::move(result);
                 return ParseResult();
-            } catch (const std::exception& e) {
+            } catch (const std::exception&) {
                 return ParseResult(1, parser.getOffset());
             }
         }
@@ -625,7 +626,6 @@ namespace hope::json {
         };
     };
 
-}  // namespace json
-}  // namespace hope
+}  // namespace hope::json
 
 /*! @} */
